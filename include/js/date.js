@@ -1,15 +1,16 @@
-document.querySelector('#dateDeb').addEventListener('keypress', noKeyPress); //On désactive la saisie au clavier dans l'input type date
+// On crée un écouteur qui va bloquer la saisie au clavier sur les input type date
+document.querySelector('#dateDeb').addEventListener('keypress', noKeyPress); 
 document.querySelector('#dateFin').addEventListener('keypress', noKeyPress);
 
-		function noKeyPress(e) {
-			e.returnValue = false;
-		}
+	function noKeyPress(e) {
+		e.returnValue = false;
+	}
 
 document.querySelector('#dateDeb').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de début
 document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de fin
 
 		function date_deb_valide(e){ //Controleur de l'écouteur
-			let currentYear = new Date().getFullYear(); //On récupérer l'année courante
+			let currentYear = new Date().getFullYear(); //On récupére l'année courante
 			if (new Date(this.value).getFullYear().toString().length > 3 && new Date(this.value).getFullYear() < currentYear) { //On vérifie que l'année n'est pas inférieure à l'année de la date courante
 				//window.alert("Vous ne pouvez pas sélectionner une année antérieure à " + currentYear + '.');
 				Swal.fire({ //Fenêtre d'alerte Sweet Alert 2
