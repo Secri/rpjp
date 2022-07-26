@@ -1,3 +1,4 @@
+// Désactive le bouton "Tout exporter" si une date de début et une date de fin sont renseignées
 function end_form(){
 	var champ_obligatoire = [ 'debut', 'fin' ];
 	var champ_plein = true;
