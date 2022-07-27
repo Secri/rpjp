@@ -71,6 +71,6 @@ function rpjp_limit(){
 	}
 }
 
-/*Exécution de la fct isMobile()*/
+/*Exécution de la fct*/
 is_mobile();
 	
