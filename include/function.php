@@ -350,12 +350,13 @@ function RPJP_image_size() {
 function handleStatus ($currentPost) {
 	$startingTime   = strtotime( $currentPost->dateDeb ) - time();
 	$expirationTime = strtotime( $currentPost->dateFin ) - time();
-	if ( $startingTime > 0 && $expirationTime > $startingTime ) {
-		return 'Programmée';
-	}
-	
-	else if ( $currentPost->post_status == 'draft' &&  $expirationTime > $startingTime && $expirationTime > 0 ) {
+		
+	if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > $startingTime ) ) {
 		return 'Brouillon';
+	}
+		
+	else if ( $currentPost->post_status == 'publish' && $startingTime > 0 && $expirationTime > $startingTime ) {
+		return 'Programmée';
 	}
 	
 	else if ( $currentPost->post_status == 'publish' && $expirationTime > 0 && $expirationTime > $startingTime ) {
