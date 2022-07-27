@@ -35,7 +35,7 @@ function RPJP_data_colonne($name) {
 		case 'ref': //affiche la référence de la publicité
 			echo esc_attr( get_post_meta( get_the_ID(), 'ref', true ));
 		break;
-		case 'statut': echo esc_attr ( handleStatus($post) ) /*( rpjp_cron_fct() )*/;
+		case 'statut': echo esc_attr ( handleStatus($post) );
 		break;
 	}
 }
