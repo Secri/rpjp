@@ -252,6 +252,7 @@ function RPJP_dates_disponibles($post_id){
 	$args = array(
     'post_type'  => 'regie_publicitaire',
 	'post_status' => 'publish',
+	'posts_per_page => -1,
     'meta_query' => array(
 			'relation'	=> 'AND',
 			array(
