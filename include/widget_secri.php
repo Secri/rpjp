@@ -35,8 +35,9 @@ class rpjp_widget extends WP_Widget {
         echo '<br>Ce widget est automatique et ne nécessite pas de paramètres.';
 	}
 	
-	/*public function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
+		return $new_instance;
 		//Pas de MAJ de l'instance puisque pas de paramètres
-	}*/
+	}
 
 }
