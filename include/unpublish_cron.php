@@ -12,6 +12,7 @@
 		$args = array( // On cherche tous les posts de type regie_publicitaire qui sont publiés
 						'post_type'  => 'regie_publicitaire',
 						'post_status' => 'publish',
+						'posts_per_page' => -1,
 				);
 		$query = new WP_Query( $args );	// on lance la requête
 		if ( $query->post_count > 0 ) { // si la requête retourne au moins un post 
