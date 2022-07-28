@@ -3,7 +3,7 @@
 		add_action( 'rpjp_cron_hook', 'rpjp_cron_fct'); // On créé un hook perso qui lance la fonction de dépublication
 		register_deactivation_hook( __FILE__, 'rpjp_cron_deactivate'); // On désactive le cron si le plugin est désactivé
 		if ( ! wp_next_scheduled('rpjp_cron_hook')) { // On vérifie que la tâche n'est pas déjà lancée
-			wp_schedule_event( time(), 'hourly', 'rpjp_cron_hook' ); // Mettre à 'twicedaily' ?
+			wp_schedule_event( time(), 'hourly', 'rpjp_cron_hook' ); // On lance le cron (mettre à twicedaily ?)
 		}
 	});
 	
