@@ -38,14 +38,14 @@ function RPJP_custom_post_type() {
 		'hierarchical'        => false,
 		'public'              => false,
 		'publicly_queryable'  => false,
-		'show_ui' 			  => true,
+		'show_ui' 	      => true,
 		'exclude_from_search' => true,
-		'show_in_nav_menus'	  => false,
-		'menu_icon' 		  => 'dashicons-megaphone',
-		'as_archive'		  => false,
-		'rewrite'			  => false,
+		'show_in_nav_menus'   => false,
+		'menu_icon' 	      => 'dashicons-megaphone',
+		'as_archive'	      => false,
+		'rewrite'	      => false,
 		'has_archive'         => true,
-		'rewrite'			  => array( 'slug' => 'publicite'),
+		'rewrite'	      => array( 'slug' => 'publicite'),
 
 	);
 	
@@ -71,7 +71,7 @@ function RPJP_add_metabox() {
 		'Images', // titre
 		'RPJP_image_mobile_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'normal', // position 
+		'normal', // position (! optionel)
 		'default'); // priorité
 
 	//Box pour gérer les paramètres de la publicité (post-type d'affichage, lien, no follow, dates...)
@@ -80,7 +80,7 @@ function RPJP_add_metabox() {
 		'Informations sur la publicité', // titre
 		'RPJP_metabox_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'normal', // position 
+		'normal', // position (! optionel)
 		'default' // priorité
 	);
 	
@@ -90,7 +90,7 @@ function RPJP_add_metabox() {
 		'Statut', // titre
 		'RPJP_statut_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'side', // position 
+		'side', // position (! optionel)
 		'default' // priorité
 	);
 	
@@ -100,7 +100,7 @@ function RPJP_add_metabox() {
 		'Référence', // titre
 		'RPJP_ref_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'side', // position 
+		'side', // position (! optionel)
 		'default' // priorité
 	);
 }
