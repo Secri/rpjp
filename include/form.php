@@ -45,10 +45,12 @@
 				$taxonomy_name = $options['RPJP_taxo']; //on récupère le nom de la taxonomie
 				$termchildren = get_term_children( $term_id, $taxonomy_name ); //on récupère la liste des enfants du terme parent
 				
-				//Si la taxonomie et le terme parent sont définis, on affiche tout les enfants dans une liste déroulante
-				foreach ( $termchildren as $child ) {
-					$term = get_term_by( 'id', $child, $taxonomy_name );
-					echo '<option value='.$term->name.'>'.$term->name.'</option>';
+				//Si la taxonomie est définie, on affiche tout les enfants dans une liste déroulante
+				if ($options['RPJP_taxo'] != "") {
+					foreach ( $termchildren as $child ) {
+						$term = get_term_by( 'id', $child, $taxonomy_name );
+						echo '<option value='.$term->name.'>'.$term->name.'</option>';
+					}
 				}
 			?>
 		</select>
