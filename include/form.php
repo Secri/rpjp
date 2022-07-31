@@ -6,13 +6,14 @@
         <select id="cpt" name="cpt" required>
 			<option value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'cpt', true ) ); ?>">-- <?php echo esc_attr( get_post_meta( get_the_ID(), 'cpt', true ) ); ?> --</option>
 			<?php 
-			$args = array(
-								'public'   => true,
-						);
-			$cpt = get_post_types($args);
-			foreach($cpt as $key => $value){
-				echo '<option value='.$value.'>'.$value.'</option>';
-			}?>
+				$args = array( 'public'   => true );
+				$cpt = get_post_types($args);
+				foreach($cpt as $key => $value){
+					if ($value != get_post_meta( get_the_ID(), 'cpt', true ) && $value != 'attachment') {
+						echo '<option value='.$value.'>'.$value.'</option>';
+					}
+				}
+			?>
 		</select>
     </p>
 	
