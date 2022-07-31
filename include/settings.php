@@ -111,17 +111,18 @@ function RPJP_field_taxo($args){
             id="<?php echo esc_attr( $args['label_for'] ); ?>"
             data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
             name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			placeholder="category"
 			value="<?php echo isset( $options['RPJP_taxo'] ) ?  $options['RPJP_taxo'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le nom de la taxonomie voulue pour laquelle les termes parents seront récupérés.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'RPJP_settings' ); ?>
     </p>
     <?php
 }
 
 function RPJP_field_parent( $args ) {
     $options = get_option('RPJP_options', array()); //récupère les options créées
-    //créer un input de texte pour y entrer le terme parent voulu
+    //crée un input texte pour y entrer le terme parent voulu
 	?>
     <input  type="text"  
             id="<?php echo esc_attr( $args['label_for'] ); ?>"
@@ -130,7 +131,7 @@ function RPJP_field_parent( $args ) {
 			value="<?php echo isset( $options['RPJP_parent'] ) ?  $options['RPJP_parent'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le nom de la taxonomie mère pour pouvoir sélectionner les taxonomies enfants sur la page de création ou d\'édition d\'une publicité.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'RPJP_settings' ); ?>
     </p>
     <?php
 }
@@ -146,7 +147,7 @@ function RPJP_field_div($args){
 			value="<?php echo isset( $options['RPJP_div'] ) ?  $options['RPJP_div'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le sélécteur pour la div qui contient tout le site (.class ou #id).', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le sélécteur pour la div qui contient tout le site (.class ou #id). Obligatoire pour l\'affichage sur mobile !', 'RPJP_settings' ); ?>
     </p>
     <?php
 	add_settings_error(
@@ -166,10 +167,11 @@ function RPJP_field_size($args){
             id="<?php echo esc_attr( $args['label_for'] ); ?>"
             data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
             name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			placeholder="992"
 			value="<?php echo isset( $options['RPJP_size'] ) ?  $options['RPJP_size'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez la largeur pour laquelle le site passe en version mobile.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez la largeur en PX à partir de laquelle s\'affichera la version mobile.', 'RPJP_settings' ); ?>
     </p>
     <?php
 }
