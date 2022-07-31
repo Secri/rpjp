@@ -352,7 +352,7 @@ function handleStatus ($currentPost) {
 	$startingTime   = strtotime( $currentPost->dateDeb ) - time();
 	$expirationTime = strtotime( $currentPost->dateFin ) - time();
 		
-	if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > $startingTime ) ) {
+	if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > 0 && $expirationTime > $startingTime ) ) {
 		return 'Brouillon';
 	}
 		
