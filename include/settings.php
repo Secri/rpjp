@@ -98,12 +98,12 @@ function RPJP_settings_init() {
 /*Fonction de callback*/
 function RPJP_section_callback( $args ) {
     ?>
-    <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Tous les champs sont obligatoires.', 'RPJP_settings' ); ?></p>
+    <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Section de réglage de l\'extension réservée au webmaster.', 'RPJP_settings' ); ?></p>
     <?php
 }
  
 /*Fonctions qui affichent l'encard de texte pour y entrer son paramètre*/
-function RPJP_field_taxo($args){
+function RPJP_field_taxo( $args ){
 	$options = get_option('RPJP_options', array()); //récupère les options créées
     //créer un input de texte pour y entrer la taxonomie voulue
 	?>
@@ -147,7 +147,7 @@ function RPJP_field_div($args){
 			value="<?php echo isset( $options['RPJP_div'] ) ?  $options['RPJP_div'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le sélécteur pour la div qui contient tout le site (.class ou #id). Obligatoire pour l\'affichage sur mobile !', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le sélecteur CSS pour cibler le conteneur du site (.class ou #id). Obligatoire pour l\'affichage sur mobile !', 'RPJP_settings' ); ?>
     </p>
     <?php
 	add_settings_error(
@@ -171,7 +171,7 @@ function RPJP_field_size($args){
 			value="<?php echo isset( $options['RPJP_size'] ) ?  $options['RPJP_size'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez la largeur en PX à partir de laquelle s\'affichera la version mobile.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez une largeur en PX en dessous de laquelle s\'affichera la version mobile.', 'RPJP_settings' ); ?>
     </p>
     <?php
 }
