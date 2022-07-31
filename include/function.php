@@ -38,14 +38,14 @@ function RPJP_custom_post_type() {
 		'hierarchical'        => false,
 		'public'              => false,
 		'publicly_queryable'  => false,
-		'show_ui' 	      => true,
+		'show_ui' 			  => true,
 		'exclude_from_search' => true,
-		'show_in_nav_menus'   => false,
-		'menu_icon' 	      => 'dashicons-megaphone',
-		'as_archive'	      => false,
-		'rewrite'	      => false,
+		'show_in_nav_menus'	  => false,
+		'menu_icon' 		  => 'dashicons-megaphone',
+		'as_archive'		  => false,
+		'rewrite'			  => false,
 		'has_archive'         => true,
-		'rewrite'	      => array( 'slug' => 'publicite'),
+		'rewrite'			  => array( 'slug' => 'publicite'),
 
 	);
 	
@@ -71,7 +71,7 @@ function RPJP_add_metabox() {
 		'Images', // titre
 		'RPJP_image_mobile_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'normal', // position (! optionel)
+		'normal', // position 
 		'default'); // priorité
 
 	//Box pour gérer les paramètres de la publicité (post-type d'affichage, lien, no follow, dates...)
@@ -80,7 +80,7 @@ function RPJP_add_metabox() {
 		'Informations sur la publicité', // titre
 		'RPJP_metabox_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'normal', // position (! optionel)
+		'normal', // position 
 		'default' // priorité
 	);
 	
@@ -90,7 +90,7 @@ function RPJP_add_metabox() {
 		'Statut', // titre
 		'RPJP_statut_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'side', // position (! optionel)
+		'side', // position 
 		'default' // priorité
 	);
 	
@@ -100,7 +100,7 @@ function RPJP_add_metabox() {
 		'Référence', // titre
 		'RPJP_ref_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
-		'side', // position (! optionel)
+		'side', // position 
 		'default' // priorité
 	);
 }
@@ -141,7 +141,9 @@ function RPJP_save_meta_boxes( $post_id ) {
 	$arr_post = get_posts($arg);
 	$options = get_option('RPJP_options', array()); 
 	foreach($arr_post as $post){
-		update_post_meta( get_the_ID(), 'ref', sanitize_text_field($options['RPJP_prefixe'].get_the_date('mY')."-".get_the_ID().$options['RPJP_suffixe']));
+		$fullPrefixe = $options['RPJP_prefixe'] != '' ? $options['RPJP_prefixe'] . '-' : '';
+		$fullSuffixe = $options['RPJP_suffixe'] != '' ? '-' . $options['RPJP_suffixe'] : '';
+		update_post_meta( get_the_ID(), 'ref', sanitize_text_field( strtoupper($fullPrefixe) . get_the_date('mY') . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
 	}
 	
 	//Sauvegarde l'image ajoutée par la version mobile
@@ -340,11 +342,11 @@ function RPJP_show_error_dates_dispo(){
 	}
 }
 
-/*Fonction qui crée des gabarits de taille d'images*/
+/* Crée des gabarits de taille d'images pour desktop et mobile */
 add_action( 'after_setup_theme', 'RPJP_image_size' );
 function RPJP_image_size() {
-    add_image_size( 'desktop', 345, 270 ); //taille images pub ordinateur (345x270)
-    add_image_size( 'mobile', 970, 250 ); //taille images pub mobile (970x250)
+    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270)
+    add_image_size( 'rpjp_mobile_img_size', 970, 250 ); //taille images pub mobile (970x250)
 }
 
 /* Fonction qui gère le statut des posts de la régie */
