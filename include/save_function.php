@@ -335,10 +335,3 @@ function RPJP_show_error_dates_dispo(){
 		}
 	}
 }
-
-add_action( 'after_setup_theme', 'RPJP_image_size' );
-/* Fonction qui crée des gabarits de taille d'images pour desktop et mobile */
-function RPJP_image_size() {
-    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270)
-    add_image_size( 'rpjp_mobile_img_size', 970, 250 ); //taille images pub mobile (970x250)
-}
