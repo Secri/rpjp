@@ -1,16 +1,5 @@
-<div class="box">
-    <style scoped>
-        .box{
-            display: grid;
-            grid-template-columns: max-content 1fr;
-            grid-row-gap: 10px;
-            grid-column-gap: 20px;
-        }
-        .field{
-            display: contents;
-        }
-    </style>
-	
+<div class="infos_box">
+    	
 	<!-- Liste déroulante affichant tous les post-type du site -->
 	<p class="meta-options field">
         <label for="cpt">Page d'affichage<strong style="color:red">*</strong></label>
