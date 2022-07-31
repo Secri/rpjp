@@ -1,6 +1,6 @@
 <?php
 
-/*On utilise une fonction pour créer notre custom post type*/
+/* Création de notre custom post type avec le hook init */
 add_action( 'init', 'RPJP_custom_post_type', 0 );
 
 function RPJP_custom_post_type() {
@@ -51,6 +51,14 @@ function RPJP_custom_post_type() {
 	
 	// On enregistre notre custom post type qu'on nomme ici "regie_publicitaire" et ses arguments
 	register_post_type( 'regie_publicitaire', $args );
+}
+
+add_action('init','RPJP_session');
+/* Démarre une nouvelle session ou reprend une session existante */
+function RPJP_session(){
+	if ( !session_id() ) {
+		session_start();
+	}
 }
 
 /*Ajout de la page de réglages et d'export*/
@@ -119,9 +127,8 @@ function RPJP_ref_callback($post){ //référence
 	include plugin_dir_path( __FILE__ ) . './ref.php';
 }
 
-/*Fonction permettant de sauvegarder le contenu des metabox*/
 add_action( 'save_post', 'RPJP_save_meta_boxes',1 );
- 
+/*Fonction permettant de sauvegarder le contenu des metabox*/
 function RPJP_save_meta_boxes( $post_id ) {
     //if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
     /*if ( $parent_id = wp_is_post_revision( $post_id ) ) {
@@ -186,7 +193,6 @@ function RPJP_save_meta_boxes( $post_id ) {
 }
 
 add_action( 'save_post', 'RPJP_verif');
-
 /*Fonction qui permet de vérifier si la date de début entrée n'est pas postérieure à la date de fin*/
 function RPJP_verif($post_id){
 	//l'action ne s'exécute pas si l'on met le poste à la corbeille ou si on le restaure
@@ -221,13 +227,6 @@ function RPJP_show_error(){
 			<p><strong><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'RPJP' ); ?></strong></p>
 		</div>
 		<?php	
-	}
-}
-
-add_action('init','RPJP_session');
-function RPJP_session(){
-	if ( !session_id() ) {
-		session_start();
 	}
 }
 
@@ -337,9 +336,9 @@ function RPJP_show_error_dates_dispo(){
 	}
 }
 
-/*Fonction qui créer des gabarits de taille d'images*/
 add_action( 'after_setup_theme', 'RPJP_image_size' );
+/* Fonction qui crée des gabarits de taille d'images pour desktop et mobile */
 function RPJP_image_size() {
-    add_image_size( 'desktop', 345, 270 ); //taille images pub ordinateur (345x270)
-    add_image_size( 'mobile', 970, 250 ); //taille images pub mobile (970x250)
+    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270)
+    add_image_size( 'rpjp_mobile_img_size', 970, 250 ); //taille images pub mobile (970x250)
 }
