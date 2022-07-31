@@ -215,7 +215,7 @@ add_action( 'admin_menu', 'RPJP_options_page' );
 function RPJP_options_page() {
 	add_submenu_page(
 		'edit.php?post_type=regie_publicitaire',
-		'Réglages des publicités',
+		'Réglages avancés',
         'Réglages',
         'manage_options',
         'RPJP_settings',
