@@ -9,6 +9,11 @@ document.querySelector('#dateFin').addEventListener('keypress', noKeyPress);
 document.querySelector('#dateDeb').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de début
 document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de fin
 
+	// Gestion du bouton exporter de la liste des post regie_publicitaire
+	if ( document.body.contains(document.getElementById('exporter')) ) {
+		document.getElementById('exporter').disabled = true;
+	}
+
 		function date_deb_valide(e){ //Controleur de l'écouteur
 			let currentYear = new Date().getFullYear(); //On récupére l'année courante
 			if (new Date(this.value).getFullYear().toString().length > 3 && new Date(this.value).getFullYear() < currentYear) { //On vérifie que l'année n'est pas inférieure à l'année de la date courante
@@ -35,6 +40,13 @@ document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un 
 						});
 						this.value = ""; //On remet la valeur de l'input à 0
 					}
+				}
+			}
+			if ( document.body.contains(document.getElementById('exporter')) ) { // Si l'élément HTML ID 'exporter' existe
+				let isDebFilled = document.querySelector('#dateDeb').value; // On récupère la valeur de début
+				let isEndFilled = document.querySelector('#dateFin').value; // On récupére la valeur de fin
+				if (isDebFilled.length > 0 && isEndFilled.length > 0) { // Si les deux dates sont renseignées
+					document.getElementById('exporter').disabled = false; // On active le bouton exporter
 				}
 			}
 		}
