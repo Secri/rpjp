@@ -5,20 +5,22 @@ add_action( 'manage_posts_extra_tablenav', 'RPJP_add_export_button', 20, 1 );
 
 /*Ajout de boutons sur la page listant toutes les publicités*/
 function RPJP_add_export_button( $which ) {
+	
 	wp_enqueue_script( 'RPJP-export', plugins_url( '/js/export.js', __FILE__), '', '', true );
-    global $typenow;
+    
+	global $typenow;
   
     if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //teste si l'on se trouve sur le bon post-type 
         ?>
 		<!-- permet de renseigner les dates voulues pour l'export ou d'exporter tout -->
 		<div>|&nbsp;&nbsp;&nbsp;
-		<input type="submit" name="export_post_date" disabled class="button" value="<?php _e('Options d\'exportation'); ?>"/>
-		<form method="get">
-			<input type="date" id="debut" name="debut" onchange="end_form()"></input>
-			<input type="date" id="fin" name="fin" onchange="end_form()"></input>
-			<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter'); ?>" />
-		</form>
-        <input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités'); ?>" />
+			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp_export' ) ?></b>
+			<form method="get">
+				<input type="date" id="debut" name="debut" onchange="end_form()"></input>
+				<input type="date" id="fin" name="fin" onchange="end_form()"></input>
+				<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter'); ?>" />
+			</form>
+			<input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités'); ?>" />
 		</div>
         <?php
     }
