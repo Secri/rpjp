@@ -9,7 +9,7 @@ document.querySelector('#dateFin').addEventListener('keypress', noKeyPress);
 document.querySelector('#dateDeb').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de début
 document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un écouteur sur le changement de valeur de la date de fin
 
-	// Gestion du bouton exporter de la liste des post regie_publicitaire
+	// Gestion du bouton exporter de la liste des posts regie_publicitaire
 	if ( document.body.contains(document.getElementById('exporter')) ) {
 		document.getElementById('exporter').disabled = true;
 	}
