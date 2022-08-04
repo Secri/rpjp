@@ -1,5 +1,5 @@
 let pub = document.querySelector('.RPJP_mobile'); //on récupère l'ensemble de la publicité mobile (lien, image)
-let svg = document.querySelector('.svg'); //récupère le bouton
+let svg = document.querySelector('.rpjp_svg'); //récupère le bouton
 let ferme = false; //vérifie si la publicité a été fermée ou non
 let selector = document.querySelector('.get_select').innerText; //récupère la valeur du selector passé dans les réglages
 let page = document.querySelector(selector);
@@ -10,6 +10,7 @@ function is_mobile(){
 	let size = document.querySelector('.get_size').innerText; //récupère la valeur de taille passée dans les réglages
 	let imageD = document.querySelector('.imageDesktop'); //récupère l'image de la publicité format ordinateur
 	let imageM = document.querySelector('.imageMobile'); //récupère l'image de la publicité format mobile
+	
 	let hauteurBann; //On initialise la variable hauteur de la bannière
 	imageM.style.display = "none";
 	imageM.style.maxWidth = screen.width+"px";
