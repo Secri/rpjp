@@ -148,7 +148,6 @@ function RPJP_save_meta_boxes( $post_id ) {
 	
 	//Sauvegarde l'image ajoutée par la version mobile
 	if ( ! current_user_can( 'edit_posts', $post_id ) ){ return 'not permitted'; }
-    //same array as in custom_postimage_meta_box_func($post)
     $meta_keys = array('image_desktop','image_mobile');
     foreach($meta_keys as $meta_key){
 		if(isset($_POST[$meta_key]) && intval($_POST[$meta_key])!=''){
@@ -169,12 +168,16 @@ function RPJP_save_meta_boxes( $post_id ) {
 		update_post_meta($post_id, 'categ', $categ,sanitize_text_field( $_POST[$categ] ));
 	}
 	//Sauvegarde l'état de la checkbox "follow"
-	if(isset($_POST['follow'])){
+	if(isset($_POST['follow'])){ // Si la case est cochée à la soumission du formulaire
 		update_post_meta($post_id, "follow", $_POST["follow"]);
+	} else {
+		update_post_meta( $post_id, 'follow', 'off' );
 	}
 	//Sauvegarde l'état de la checkbox "mobile"
-	if(isset($_POST['mobile'])){
+	if(isset($_POST['mobile'])){ // Si la case est cochée à la soumission du formulaire
 		update_post_meta($post_id, "mobile", $_POST["mobile"]);
+	} else {
+		update_post_meta( $post_id, 'mobile', 'off');
 	}
 	
 	//Sauvegarde les données des champs de texte et calendrier
@@ -342,10 +345,10 @@ function RPJP_show_error_dates_dispo(){
 	}
 }
 
-/* Crée des gabarits de taille d'images pour desktop et mobile */
+/* Crée des gabarits de taille d'images pour desktop et mobile */ // SERT A KEUD !
 add_action( 'after_setup_theme', 'RPJP_image_size' );
 function RPJP_image_size() {
-    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270)
+    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270) ATTENTION, semble ne pas fonctionner avec les GIF !!!
     add_image_size( 'rpjp_mobile_img_size', 970, 250 ); //taille images pub mobile (970x250)
 }
 
