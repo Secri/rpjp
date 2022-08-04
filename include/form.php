@@ -1,5 +1,5 @@
 <div class="infos_box">
-    	
+ 		
 	<!-- Liste déroulante affichant tous les post-type du site -->
 	<p class="meta-options field">
         <label for="cpt">Page d'affichage<strong style="color:red">*</strong></label>
@@ -73,13 +73,9 @@
 		<?php
 			global $post;
 			$custom = get_post_custom($post->ID);
-			if(isset($custom["follow"][0])){
-				$follow = $custom["follow"][0];
-			}				
 		?>
-		<input type="checkbox" name="follow" <?php if(isset($follow) && $follow == true ) { ?>checked="checked"<?php } ?> /> 
-    </p>
-	
+		<input type="checkbox" name="follow" <?php if(isset( $custom["follow"][0] ) && $custom["follow"][0] == 'on' ) { ?> checked="checked" <?php } ?> />
+	</p>
 	
 	<!-- Calendrier pour saisir les dates de début et de fin -->
 	<?php 
@@ -107,7 +103,13 @@
 	
 	<!-- Ajout d'une checkbox pour activer ou désactiver la mise en page de pub sur mobile -->
 	<p class="meta-options field"> 
-	<label for="mobile">Pub sur mobile<?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo '&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)' ?></label>
+		<label for="mobile">
+			Pub sur mobile
+			<?php
+				if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) 
+					echo '&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)'
+			?>
+		</label>
 		<?php
 			global $post;
 			$custom = get_post_custom($post->ID);
@@ -115,7 +117,7 @@
 				$mobile = $custom["mobile"][0]; 
 			}
 		?>
-		<input <?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($mobile) && $mobile == true ) { ?>checked="checked"<?php } ?> />
+		<input <?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
     </p>
+	
 </div>
-
