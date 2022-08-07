@@ -1,4 +1,4 @@
-let pub = document.querySelector('.RPJP_mobile'); //on récupère l'ensemble de la publicité mobile (lien, image)
+let pub = document.querySelector('.RPJP_img_cont'); //on récupère l'ensemble de la publicité mobile (lien, image)
 let svg = document.querySelector('.rpjp_svg'); //récupère le bouton
 let ferme = false; //vérifie si la publicité a été fermée ou non
 let selector = document.querySelector('.get_select').innerText; //récupère la valeur du selector passé dans les réglages
