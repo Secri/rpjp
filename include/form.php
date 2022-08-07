@@ -20,11 +20,11 @@
 	<!-- Liste déroulante affichant les catégories disponibles pour le post-type choisi -->
 	<p class="meta-options field">
         <label for="categ">Catégorie d'affichage<strong style="color:red">*</strong></label>
+        
         <select id="categ" name="categ" required>
-			<option value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'categ', true ) ); ?>">-- <?php echo esc_attr( get_post_meta( get_the_ID(), 'categ', true ) ); ?> --</option>
 			<option value="toutes">Afficher sur toutes les pages</option>
 			<?php	
-			
+				$categ = get_post_meta( get_the_ID(), 'categ', true );
 				$options = get_option( 'RPJP_options', array() ); //on récupère les données de la page d'options
 				
 				//on récupère tous les termes parents
@@ -49,7 +49,8 @@
 				if ($options['RPJP_taxo'] != "") {
 					foreach ( $termchildren as $child ) {
 						$term = get_term_by( 'id', $child, $taxonomy_name );
-						echo '<option value='.$term->name.'>'.$term->name.'</option>';
+						($categ == $term->slug) ? $selected = " selected " : $selected = "";
+						echo '<option value='.$term->slug.$selected.'>'.$term->name.'</option>';
 					}
 				}
 			?>
