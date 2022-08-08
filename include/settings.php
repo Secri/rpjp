@@ -112,7 +112,7 @@ function RPJP_field_taxo( $args ){
             data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
             name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
 			placeholder="category"
-			value="<?php echo isset( $options['RPJP_taxo'] ) ?  $options['RPJP_taxo'] : false; ?>">
+			value="<?php echo isset( $options['RPJP_taxo'] ) && $options['RPJP_taxo'] != '' ?  $options['RPJP_taxo'] : 'category'; ?>">
     </input>
     <p class="description">
         <?php esc_html_e( 'Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'RPJP_settings' ); ?>
