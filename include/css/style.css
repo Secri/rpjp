@@ -11,7 +11,12 @@
 .infos_box .meta-options.field select,  .infos_box .meta-options.field input[type=date]{
 	max-width : 150px
 }
-/* FIN Box d'informations création CPT */		
+/* FIN Box d'informations création CPT */	
+/* Box Settings */
+#RPJP_metabox_ref input[type=text] {
+	width : 100%
+}
+/* FIN box settings */	
 div#postimagediv{
 	display:none;
 }
