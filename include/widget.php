@@ -109,8 +109,6 @@ class rpjp_widget extends WP_Widget {
 
 		if($pub->have_posts()){
 			$pub->the_post();
-			//On passe les infos get_size pour mobile.js
-			echo '<div class="get_size" style="display:none">'.$options['RPJP_size'].'</div>';
 			//On affiche la pub
 			$this->display_the_add( get_the_ID() );
 		}
@@ -122,6 +120,7 @@ class rpjp_widget extends WP_Widget {
 	// fonction qui crée un élément HTML img à partir de son URL et du terminal client
 	private function rpjp_display_img( $image_url, $display ) {
 		if ( $display == 'mobile' ) {
+			echo '<div class="get_size" style="display:none">'.$options['RPJP_size'].'</div>'; //On passe get_size pour mobile.js
 			echo wp_get_attachment_image ( attachment_url_to_postid( $image_url ) , 'Full size', false, array( 'class' => 'imageMobile' ) );
 		} else {
 			echo wp_get_attachment_image ( attachment_url_to_postid( $image_url ) , 'Full size', false, array( 'class' => 'imageDesktop' ) );
@@ -152,7 +151,7 @@ class rpjp_widget extends WP_Widget {
 
 		if(get_post_meta( $currentId, 'follow', true ) == "on"){
 
-			echo '<a rel="nofollow" class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; //crée un élément <a> et récupère l\'URL passée en paramètre
+			echo '<a rel="nofollow" class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; //crée un élément <a> en nofollow
 
 			echo $this->rpjp_display_img( wp_get_attachment_image_url(get_post_meta( $currentId, 'image_desktop', true ), 'Full Size'), 'desktop' );
 
@@ -174,7 +173,7 @@ class rpjp_widget extends WP_Widget {
 
 		} else {
 
-			echo '<a class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; // ajoute le rel=nofollow
+			echo '<a class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; // crée le lien
 
 			echo $this->rpjp_display_img( wp_get_attachment_image_url(get_post_meta($currentId, 'image_desktop', true), 'Full Size'), 'desktop' );
 
