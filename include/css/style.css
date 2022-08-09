@@ -11,6 +11,9 @@
 .infos_box .meta-options.field select,  .infos_box .meta-options.field input[type=date]{
 	max-width : 150px
 }
+#RPJP_metabox_imgmobile .inside .custom_postimage_wrapper .addimage {
+	margin: 15px 0 5px
+}
 /* FIN Box d'informations création CPT */	
 /* Box Settings */
 #RPJP_metabox_ref .inside input[type=text],#RPJP_metabox_statut .inside select {
