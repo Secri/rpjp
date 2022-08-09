@@ -51,8 +51,6 @@ function RPJP_custom_post_type() {
 	
 	// On enregistre notre custom post type qu'on nomme ici "regie_publicitaire" et ses arguments
 	register_post_type( 'regie_publicitaire', $args );
-	//On enlève l'image mise en avant du CPT
-	remove_post_type_support('regie_publicitaire', 'thumbnail');
 }
 
 /*Ajout de la page de réglages et d'export*/
