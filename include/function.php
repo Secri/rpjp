@@ -115,7 +115,6 @@ function RPJP_metabox_callback( $post ) { //paramètres
 }
 
 function RPJP_statut_callback($post){ //statut
-	include plugin_dir_path( __FILE__ ) . './statut.php';
 	?>
 	<!-- Affiche une liste déroulante qui indique le statut de la publicité -->
 	<p class="meta-options field">
