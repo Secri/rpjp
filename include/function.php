@@ -355,13 +355,6 @@ function RPJP_show_error_dates_dispo(){
 	}
 }
 
-/* Crée des gabarits de taille d'images pour desktop et mobile */ // SERT A KEUD !
-add_action( 'after_setup_theme', 'RPJP_image_size' );
-function RPJP_image_size() {
-    add_image_size( 'rpjp_desktop_img_size', 345, 270 ); //taille images pub ordinateur (345x270) ATTENTION, semble ne pas fonctionner avec les GIF !!!
-    add_image_size( 'rpjp_mobile_img_size', 970, 250 ); //taille images pub mobile (970x250)
-}
-
 /* Fonction qui gère le statut des posts de la régie */
 function handleStatus ($currentPost) {
 	$startingTime   = strtotime( $currentPost->dateDeb ) - time();
