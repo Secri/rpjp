@@ -9,9 +9,13 @@ function is_mobile(){
 	let imageM = document.querySelector('.imageMobile'); //récupère l'image de la publicité format mobile
 	let hauteurBann; //On initialise la variable hauteur de la bannière
 	
-	imageM.style.display = "none";
 	pub.style.maxWidth = screen.width+"px";
-	imageM.style.maxWidth = screen.width+"px";
+	//On vérifie que l'image mobile existe
+	if (document.body.contains(imageM)) {
+		imageM.style.display = "none";
+		imageM.style.maxWidth = screen.width+"px";
+		imageM.style.height = 'auto';
+	}
 	
 	let body = document.body;
 
