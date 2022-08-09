@@ -10,7 +10,8 @@ function is_mobile(){
 	let hauteurBann; //On initialise la variable hauteur de la bannière
 	
 	imageM.style.display = "none";
-	pub.style.maxWidth = screen.width+"px"; // maxWidth ou width ?
+	pub.style.maxWidth = screen.width+"px";
+	imageM.style.maxWidth = screen.width+"px";
 	
 	let body = document.body;
 
