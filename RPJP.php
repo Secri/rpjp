@@ -3,7 +3,7 @@
 Plugin Name: RPJP
 Plugin URI: 
 Description: Plugin permettant la mise en place d'une régie publicitaire.
-Author: Justine Pruliere
+Authors: Christophe IENZER & Justine Pruliere
 Version: 1.0
 Author URI: 
 */
