@@ -116,6 +116,7 @@ class rpjp_widget extends WP_Widget {
 		}
 		
 		echo $args['after_widget'];
+		wp_reset_postdata(); // Reset la variable globale $the_post 
 	}
 
 	// fonction qui crée un élément HTML img à partir de son URL et du terminal client
