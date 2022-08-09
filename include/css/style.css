@@ -13,7 +13,7 @@
 }
 /* FIN Box d'informations création CPT */	
 /* Box Settings */
-#RPJP_metabox_ref input[type=text] {
+#RPJP_metabox_ref .inside input[type=text],#RPJP_metabox_statut .inside select {
 	width : 100%
 }
 /* FIN box settings */	
