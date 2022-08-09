@@ -1,2 +1,2 @@
 # rpjp
-Plugin wordpress régie publicitaire
+Plugin wordpress régie publicitaire v2.0

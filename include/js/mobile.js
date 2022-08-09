@@ -2,48 +2,39 @@
 
 let svg = document.querySelector('.rpjp_svg'); //récupère le bouton
 
-//let ferme = false;
-
-//let selector = document.querySelector('.get_select').innerText; //récupère la valeur du selector passé dans les réglages
-
-//let page = document.querySelector(selector);
-
 /*Fonction qui gère l'affichage des publicités sur mobile*/
 function is_mobile(){
-
 	let size = document.querySelector('.get_size').innerText; //récupère la valeur de taille passée dans les réglages
 	let imageD = document.querySelector('.imageDesktop'); //récupère l'image de la publicité format ordinateur
 	let imageM = document.querySelector('.imageMobile'); //récupère l'image de la publicité format mobile
 	let hauteurBann; //On initialise la variable hauteur de la bannière
+	
 	imageM.style.display = "none";
-	//imageM.style.maxWidth = screen.width+"px"; 
-	pub.style.maxWidth = screen.width+"px"; // maxWidth ou width ?
+	pub.style.maxWidth = screen.width+"px";
+	imageM.style.maxWidth = screen.width+"px";
 	
 	let body = document.body;
 
 	if(screen.width < size && (isMobile(window.navigator.userAgent) || isMobile(window.navigator.vendor))){
-		//ferme = false;
 		imageD.style.display = "none"; //cache l'image de la publicité format ordinateur
 		imageM.style.display = "block"; //affiche l'image de la publicité format mobile
 		body.insertBefore(pub, body.firstChild); //place la publicité en premier dans le body
+		
 		pub.style.position = "fixed"; //la pub continue d'apparaitre au scroll
-		//pub.style.top = 0;
 		pub.style.bottom = 0; // On place la pub mobile en bas
 		pub.style.zIndex = 2000; //la passe au premier plan
+		
 		svg.style.display = "block"; //on affiche le bouton
-		//on le place en haut à droite et au premier plan
-		//svg.style.top = 5;
 		svg.style.zIndex = 2100;
 		svg.addEventListener("click",close_pub); //ajoute la fonction qui supprime la pub en cas de click sur le bouton
+		
 		//Calcule de la hauteur de l'image affichée et injection du décallage après le chargement du DOM ou au redimensionnement
 		window.addEventListener('load', function() {
 			hauteurBann = Math.floor((screen.width * document.querySelector('.imageMobile').naturalHeight) / document.querySelector('.imageMobile').naturalWidth);
-			//page.style.transform = 'translate(0, ' + hauteurBann + 'px)';
 			svg.style.bottom = hauteurBann - 25 + 'px';
 		});
 		window.addEventListener('resize', function() {
 			hauteurBann = Math.floor((screen.width * document.querySelector('.imageMobile').naturalHeight) / document.querySelector('.imageMobile').naturalWidth);
-			//page.style.transform = 'translate(0, ' + hauteurBann + 'px)';
 			svg.style.bottom = hauteurBann - 25 + 'px';
 		});
 		//Ecouteur sur le scroll qui exécute la fonction limit
@@ -80,4 +71,3 @@ function rpjp_limit(){
 
 /*Exécution de la fct*/
 is_mobile();
-	

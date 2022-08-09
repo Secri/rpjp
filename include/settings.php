@@ -44,19 +44,6 @@ function RPJP_settings_init() {
     );
 	
 	add_settings_field(
-        'RPJP_div', //ID
-        __( 'QuerySelector', 'RPJP_settings' ), //titre
-        'RPJP_field_div', //callback
-        'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
-        array(
-            'label_for'         => 'RPJP_div',
-            'class'             => 'RPJP_row',
-            'RPJP_custom_data' 	=> 'custom',
-        )
-    );
-	
-	add_settings_field(
         'RPJP_size', //ID
         __( 'Version mobile', 'RPJP_settings' ), //titre
         'RPJP_field_size', //callback
@@ -134,29 +121,6 @@ function RPJP_field_parent( $args ) {
         <?php esc_html_e( 'Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'RPJP_settings' ); ?>
     </p>
     <?php
-}
-
-function RPJP_field_div($args){
-	wp_enqueue_script( 'pub-div', plugins_url( '/js/error.js', __FILE__), '', '', true );	
-	$options = get_option('RPJP_options', array()); //récupère les options créées
-	?>
-    <input  type="text"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			value="<?php echo isset( $options['RPJP_div'] ) ?  $options['RPJP_div'] : false; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez le sélecteur CSS pour cibler le conteneur du site (.class ou #id). Obligatoire pour l\'affichage sur mobile !', 'RPJP_settings' ); ?>
-    </p>
-    <?php
-	add_settings_error(
-			'RPJP_error',
-			esc_attr( 'RPJP_err' ),
-			__("Format de sélecteur non valide"),
-			'error'
-	);
-	settings_errors('RPJP_error');
 }
 
 function RPJP_field_size($args){

@@ -109,14 +109,14 @@ class rpjp_widget extends WP_Widget {
 
 		if($pub->have_posts()){
 			$pub->the_post();
-			//On passe les infos get_select et get_size pour mobile.js
-			//echo '<div class="get_select" style="display:none">'.$options['RPJP_div'].'</div>';
+			//On passe les infos get_size pour mobile.js
 			echo '<div class="get_size" style="display:none">'.$options['RPJP_size'].'</div>';
 			//On affiche la pub
 			$this->display_the_add( get_the_ID() );
 		}
 		
 		echo $args['after_widget'];
+		wp_reset_postdata(); // Reset la variable globale $the_post 
 	}
 
 	// fonction qui crée un élément HTML img à partir de son URL et du terminal client

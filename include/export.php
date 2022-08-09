@@ -57,18 +57,27 @@ function RPJP_export_posts() {
 				
 				$file = fopen('php://output', 'w');
 				echo "\xEF\xBB\xBF";
-				fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Post-type d\'affichage', 'Catégorie d\'affichage', 'Référence', 'Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
+				//fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Post-type d\'affichage', 'Catégorie d\'affichage', 'Référence', 'Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
+				fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Référence', 'Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
 	  
 				//pour chaque post, récupère et affiche les données
 				foreach ($arr_post as $post) {
 					
 					if ( strtotime($post->dateDeb) >= $debut && strtotime($post->dateFin) <= $fin ) {
-						fputcsv($file, array (
+						/*fputcsv($file, array (
 												$post->post_title,
 												$post->dateDeb,
 												$post->dateFin,
 												$post->cpt,
 												$post->categ,
+												$post->ref,
+												handleStatus($post)
+											)
+								);*/
+						fputcsv($file, array ( 
+												$post->post_title,
+												date('d-m-Y', strtotime($post->dateDeb)),
+												date('d-m-Y', strtotime($post->dateFin)),
 												$post->ref,
 												handleStatus($post)
 											)
@@ -113,12 +122,13 @@ function RPJP_export_posts() {
 			
             $file = fopen('php://output', 'w');
 			echo "\xEF\xBB\xBF";
-            fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Post-type d\'affichage', 'Catégorie d\'affichage','Référence','Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
-  
+            //fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Post-type d\'affichage', 'Catégorie d\'affichage', 'Référence', 'Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
+			fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Référence', 'Statut')); //ajoute une ligne indiquant à quoi correspondent les valeurs
+			
 			//pour chaque post, récupère et affiche les données
             foreach ($arr_post as $post) {
 				
-				fputcsv($file, array ( 
+				/*fputcsv($file, array ( 
 										$post->post_title,
 										$post->dateDeb,
 										$post->dateFin,
@@ -127,8 +137,15 @@ function RPJP_export_posts() {
 										$post->ref,
 										handleStatus($post)
 										)
+						);*/
+				fputcsv($file, array ( 
+										$post->post_title,
+										date('d-m-Y', strtotime($post->dateDeb)),
+										date('d-m-Y', strtotime($post->dateFin)),
+										$post->ref,
+										handleStatus($post)
+										)
 						);
-			
 			}
             exit();
         }
