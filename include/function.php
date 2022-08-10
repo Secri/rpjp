@@ -209,8 +209,13 @@ function RPJP_save_meta_boxes( $post_id ) {
     }
 }
 
-add_action( 'save_post', 'RPJP_verif');
+add_action('do_meta_boxes', 'remove_thumbnail_box');
+/* on enlève la thumbnail box de la barre latérale */
+function remove_thumbnail_box() {
+    remove_meta_box( 'postimagediv','regie_publicitaire','side' );
+}
 
+add_action( 'save_post', 'RPJP_verif');
 /*Fonction qui permet de vérifier si la date de début entrée n'est pas postérieure à la date de fin*/
 function RPJP_verif($post_id){
 	//l'action ne s'exécute pas si l'on met le poste à la corbeille ou si on le restaure
