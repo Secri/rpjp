@@ -10,11 +10,11 @@
 <?php   	
 			if( $meta_key == 'image_desktop' ) {
 ?>
-				<p style="color:grey">Sélectionnez l'image pour l'affichage sur ordinateur<strong style="color:red">*</strong><br>Dimensions: 345px x 270px </p>
+				<p style="color:grey">Sélectionnez l'image pour l'affichage sur ordinateur (en px 345 x 270) <strong style="color:red">*</strong> :</p>
 <?php 	
 			} else if( $meta_key == 'image_mobile' ) {
 ?>
-				<p style="color:grey">Sélectionnez l'image pour l'affichage sur mobile<br>Dimensions: 1024px x 216px</p>
+				<p style="color:grey">Sélectionnez l'image pour l'affichage sur mobile (en px 216 x 1024) :</p>
 <?php
 			} 
 ?>
