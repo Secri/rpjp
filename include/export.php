@@ -90,7 +90,7 @@ function RPJP_export_posts() {
 				
 				?>
 					<div class="notice notice-warning is-dismissible" >
-						<p><?php _e( 'Aucune donnée à exporter '. date('d-m-Y', $debut) .' et le '. date('d-m-Y', $fin) .'.', 'RPJP' ); ?></p>
+						<p><?php _e( 'Aucune donnée à exporter entre le '. date('d-m-Y', $debut) .' et le '. date('d-m-Y', $fin) .'.', 'RPJP' ); ?></p>
 					</div>
 				<?php
 
