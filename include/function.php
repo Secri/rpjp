@@ -142,23 +142,15 @@ function RPJP_ref_callback($post){ //référence des publicités
 add_action( 'save_post', 'RPJP_save_meta_boxes',1 );
  
 function RPJP_save_meta_boxes( $post_id ) {
-    //if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-    	
-	//génère et sauvegarde les références automatiques
-	global $post;
-	$arg = array(
-		'post_type' => 'regie_publicitaire',
-		'post_status' => 'publish',
-		'posts_per_page' => -1,
-	);
-	$arr_post = get_posts($arg);
-	$options = get_option('RPJP_options', array()); 
-	foreach($arr_post as $post){
+    
+	//Création de la ref à l'enregistrement du post
+	if ( isset( $_POST['publish'] ) ) {
+		$options = get_option('RPJP_options', array()); 
 		$fullPrefixe = $options['RPJP_prefixe'] != '' ? $options['RPJP_prefixe'] . '-' : '';
 		$fullSuffixe = $options['RPJP_suffixe'] != '' ? '-' . $options['RPJP_suffixe'] : '';
-		update_post_meta( get_the_ID(), 'ref', sanitize_text_field( strtoupper($fullPrefixe) . get_the_date('mY') . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
+		update_post_meta( $post_id, 'ref', sanitize_text_field( strtoupper($fullPrefixe) . get_the_date('mY') . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
 	}
-	
+		
 	//Sauvegarde l'image ajoutée par la version mobile
 	if ( ! current_user_can( 'edit_posts', $post_id ) ){ return 'not permitted'; }
     $meta_keys = array('image_desktop','image_mobile');
@@ -250,7 +242,7 @@ function RPJP_show_error(){
 	}
 }
 
-add_action('init','RPJP_session');
+add_action('init','RPJP_session'); // Vérifie si la session a débuté et la lance si ce n'est pas le cas
 function RPJP_session(){
 	if ( !session_id() ) {
 		session_start();
@@ -267,7 +259,7 @@ function RPJP_dates_disponibles($post_id){
     ){
         return;
     }
-	$debut =get_post_meta($post_id, 'dateDeb', true ); //récupère la date de début
+	$debut = get_post_meta($post_id, 'dateDeb', true ); //récupère la date de début
 	$fin = get_post_meta($post_id, 'dateFin', true ); //récupère la date de fin
 	$cpt = get_post_meta( $post_id, 'cpt', true ); //récupère le post-type d'affichage choisi
 	$categ = get_post_meta( $post_id, 'categ', true ); //récupère la catégorie choisie
@@ -352,7 +344,7 @@ function RPJP_dates_disponibles($post_id){
 		);
 		wp_update_post( $arg ); //on passe le poste en brouillon
 		add_action('save_post', 'RPJP_dates_disponibles',1001); //on remet la fonction dans le hook	
-		set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car la période du <strong>". date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) ) ."</strong> au <strong>". date('d-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) ) ."</strong> est en conflit avec la publicité \"<strong>".$titre."</strong>\""." sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentant la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
+		set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car la période du <strong>". date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) ) ."</strong> au <strong>". date('d-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) ) ."</strong> est en conflit avec la publicité \"<strong>".$titre."</strong>\""." sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentants la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
 		$_SESSION['id'] = $post_id;
 	}else{
 		delete_transient( "rpjp_save_post_error" );
@@ -400,6 +392,48 @@ function handleStatus ($currentPost) {
 	
 	else { return 'Erreur'; }
 }
+
+/* REGENERATE REFS */
+	/*Enregistre le bouton sur le hook voulu (page qui liste toutes les pubs)*/
+	add_action( 'manage_posts_extra_tablenav', 'RPJP_regen_refs_button', 20, 1 );
+
+	/*Ajout de boutons sur la page listant toutes les publicités*/
+	function RPJP_regen_refs_button( $which ) {
+		
+		global $typenow;
+	  
+		if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //Si on se trouve sur la liste de type regie_publicitaire
+			?>
+			<div class="alignleft actions" style="margin-left:12px;padding-left:20px;border-left:1px solid">
+				<form method="post">
+					
+					<input type="submit" name="rpjp_regen_refs" class="button button-secondary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
+				
+				</form>
+			</div>
+			<?php
+		}
+	}
+	add_action( 'init', 'rpjp_regenerate_refs' );
+	/* Fonction qui regénère les références de toutes les pubs */
+	function rpjp_regenerate_refs() {
+		if ( isset ($_POST['rpjp_regen_refs']) ) {
+			global $post;
+			$arg = array(
+				'post_type' => 'regie_publicitaire',
+				'post_status' => array('publish', 'draft'),
+				'posts_per_page' => -1,
+			);
+			$arr_post = get_posts($arg);
+			$options = get_option('RPJP_options', array()); 
+			foreach($arr_post as $post){
+					$initialCrea = explode( '-', $post->ref );
+					$fullPrefixe = $options['RPJP_prefixe'] != '' ? $options['RPJP_prefixe'] . '-' : '';
+					$fullSuffixe = $options['RPJP_suffixe'] != '' ? '-' . $options['RPJP_suffixe'] : '';
+					update_post_meta( $post->ID, 'ref', sanitize_text_field( strtoupper($fullPrefixe) . date( 'mY', strtotime($post->post_date) ) . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
+			}
+		}
+	}
 
 /* Charger la librairie swal2*/
 add_action( 'admin_enqueue_scripts', 'load_swal_2' );
