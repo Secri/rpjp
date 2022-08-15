@@ -143,10 +143,7 @@ add_action( 'save_post', 'RPJP_save_meta_boxes',1 );
  
 function RPJP_save_meta_boxes( $post_id ) {
     //if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-    /*if ( $parent_id = wp_is_post_revision( $post_id ) ) {
-        $post_id = $parent_id;
-    }*/
-	
+    	
 	//génère et sauvegarde les références automatiques
 	global $post;
 	$arg = array(
