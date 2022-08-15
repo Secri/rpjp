@@ -129,7 +129,7 @@ function RPJP_statut_callback($post){ //statut
 	<?php
 }
 
-function RPJP_ref_callback($post){ //référence
+function RPJP_ref_callback($post){ //référence des publicités
 	?>
 	<p class="meta-options field">
 		<input disabled id="ref" type="text" name="ref"
@@ -147,7 +147,7 @@ function RPJP_save_meta_boxes( $post_id ) {
         $post_id = $parent_id;
     }*/
 	
-	//génère et sauvegarde une référence automatique
+	//génère et sauvegarde les références automatiques
 	global $post;
 	$arg = array(
 		'post_type' => 'regie_publicitaire',
@@ -246,7 +246,7 @@ function RPJP_show_error(){
 	$fin = strtotime(get_post_meta( get_the_ID(), 'dateFin', true )); //récupère la date de fin
 	if($debut > $fin){ //si la date de début est postérieure
 		?>
-		<div class="notice error my-acf-notice" >
+		<div class="notice notice-error" >
 			<p><strong><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'RPJP' ); ?></strong></p>
 		</div>
 		<?php	
@@ -295,7 +295,7 @@ function RPJP_dates_disponibles($post_id){
 			),	
 			array(
 				'relation'	=> 'OR',
-				array(
+				array( // Intersection entre les deux périodes au niveau de la date de début
 					array(
 						'key'     => 'dateDeb',
 						'value'   => $debut,
@@ -309,7 +309,7 @@ function RPJP_dates_disponibles($post_id){
 						'compare' => '>=',
 					),
 				),
-				array(
+				array( // Intersection entre les deux périodes au niveau de la date de fin
 					array(
 						'key'     => 'dateDeb',
 						'value'   => $fin,
@@ -321,6 +321,20 @@ function RPJP_dates_disponibles($post_id){
 						'value'   => $fin,
 						'type'	  => 'DATE',
 						'compare' => '>=',
+					),
+				),
+				array( // La période sélectionnée englobe une pub avec les mêmes caractéristiques
+					array(
+						'key'     => 'dateDeb',
+						'value'   => $debut,
+						'type'    => 'DATE',
+						'compare' => '>='
+					),
+					array(
+						'key'     => 'dateFin',
+						'value'   => $fin,
+						'type'    => 'DATE',
+						'compare' => '<='
 					),
 				),
 			),
@@ -328,11 +342,11 @@ function RPJP_dates_disponibles($post_id){
 	);
 	$query = new WP_Query( $args );	//on fait la requête
 	if ( $query->post_count > 1 ) { //si la requête retourne plus d'un post 
-		foreach($query as $p){
-			if(get_the_title($post_id) != get_the_title($p->ID)){
-				$titre = get_the_title($p->ID);
-			}
-		}
+				
+		while( $query->have_posts() ) : $query->the_post(); // On parcourt les 2 pubs qui ont été retournées
+			get_the_title($post_id) != get_the_title(get_the_ID()) ? $titre = get_the_title(get_the_ID()) : false ; // On cible celle qui existait au préalable et on stocke son titre
+		endwhile;
+		
 		remove_action('save_post', 'RPJP_dates_disponibles',1001); //on enlève la fonction du hook pour éviter les boucles infinies 
 		//on entre les paramètres qui passeront le post actuel en brouillon
 		$arg = array(
@@ -341,10 +355,10 @@ function RPJP_dates_disponibles($post_id){
 		);
 		wp_update_post( $arg ); //on passe le poste en brouillon
 		add_action('save_post', 'RPJP_dates_disponibles',1001); //on remet la fonction dans le hook	
-		set_transient( "acme_plugin_error_msg_error", "Impossible de publier cette publicité car la période du <strong>".get_post_meta($post_id, 'dateDeb', true)."</strong> au <strong>".get_post_meta($post_id, 'dateFin', true)."</strong> est déjà occupée par la publicité \"<strong>".$titre."</strong>\""." sur les pages \"<strong>".get_post_meta($post_id, 'cpt', true)."\"</strong> et la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
+		set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car la période du <strong>". date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) ) ."</strong> au <strong>". date('d-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) ) ."</strong> est en conflit avec la publicité \"<strong>".$titre."</strong>\""." sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentant la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
 		$_SESSION['id'] = $post_id;
 	}else{
-		delete_transient( "acme_plugin_error_msg_error" );
+		delete_transient( "rpjp_save_post_error" );
 		unset( $_SESSION['id'] );
 	}
 	wp_reset_postdata(); //on reset les données du query
@@ -356,8 +370,8 @@ function RPJP_show_error_dates_dispo(){
 	if(get_post_type() == 'regie_publicitaire'){
 		if(isset($_SESSION['id'])){
 			if(get_the_ID() == $_SESSION['id']){
-				if ($msg = get_transient( "acme_plugin_error_msg_error" )){
-					?><div class="error">
+				if ($msg = get_transient( "rpjp_save_post_error" )){
+					?><div class="notice notice-error">
 						<p><?php echo $msg; ?></p>
 					</div><?php
 				}
