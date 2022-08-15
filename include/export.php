@@ -14,7 +14,7 @@ function RPJP_add_export_button( $which ) {
     if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //teste si l'on se trouve sur le bon post-type 
         ?>
 		<!-- permet de renseigner les dates voulues pour l'export ou d'exporter tout -->
-		<div>|&nbsp;&nbsp;&nbsp;
+		<div class="alignleft actions" style="margin-left:12px;padding-left:20px;border-left:1px solid">
 			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp_export' ) ?></b>
 			<form method="get">
 				
