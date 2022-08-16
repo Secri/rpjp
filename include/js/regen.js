@@ -18,3 +18,6 @@ function rpjp_validate_regen(e) {
 		}
 	})
 }
+
+// CSS Fix pagination
+document.querySelector('.tablenav-pages').style.margin = '9px 0';
