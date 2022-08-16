@@ -253,9 +253,8 @@ add_action( 'save_post', 'RPJP_dates_disponibles', 1001);
 /*Fonction qui vérifie que la publicité à publier n'est pas prévue en même temps qu'une autre sur les mêmes post-type et catégorie*/
 function RPJP_dates_disponibles($post_id){
 	//l'action ne s'exécute pas si l'on met le poste à la corbeille ou si on le restaure
-    if(
-        isset($_REQUEST['action']) &&
-        ( $_REQUEST['action'] == 'trash' || $_REQUEST['action'] == 'untrash')
+   if(
+        isset($_REQUEST['action']) && ( $_REQUEST['action'] == 'trash' )
     ){
         return;
     }
@@ -358,24 +357,28 @@ function RPJP_show_error_dates_dispo(){
 function handleStatus ($currentPost) {
 	$startingTime   = strtotime( $currentPost->dateDeb ) - time();
 	$expirationTime = strtotime( $currentPost->dateFin ) - time();
+	
+	if ( $currentPost->post_status == 'trash' ) {
+		return __('Corbeille', 'RPJP_status');
+	}
 		
-	if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > 0 && $expirationTime > $startingTime ) ) {
-		return 'Brouillon';
+	else if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > 0 && $expirationTime > $startingTime ) ) {
+		return __('Brouillon', 'RPJP_status');
 	}
 		
 	else if ( $currentPost->post_status == 'publish' && $startingTime > 0 && $expirationTime > $startingTime ) {
-		return 'Programmée';
+		return __('Programmée', 'RPJP_status');
 	}
 	
 	else if ( $currentPost->post_status == 'publish' && $expirationTime > 0 && $expirationTime > $startingTime ) {
-		return 'Publiée';
+		return __('Publiée', 'RPJP_status');
 	}
 	
 	else if ( ($currentPost->post_status == 'publish' && $expirationTime < 0 && $expirationTime > $startingTime) || ($currentPost->post_status == 'draft' && $expirationTime < 0 && $expirationTime > $startingTime) ) {
-		return 'Dépassée';
+		return __('Dépassée', 'RPJP_status');
 	}
 	
-	else { return 'Erreur'; }
+	else { return __('Erreur', 'RPJP_status'); }
 }
 
 /* REGENERATE REFS */
