@@ -284,7 +284,34 @@ function RPJP_dates_disponibles($post_id){
 			),	
 			array(
 				'relation'	=> 'OR',
-				array( // Intersection entre les deux périodes au niveau de la date de début
+				
+				array( // La période sélectionnée est englobée par une pub avec les mêmes caractéristiques (relation AND par défaut)
+					array(
+						'key'     => 'dateDeb',
+						'value'   => $debut,
+						'type'    => 'DATE',
+						'compare' => '<='
+					),
+					array(
+						'key'     => 'dateFin',
+						'value'   => $fin,
+						'type'    => 'DATE',
+						'compare' => '>='
+					),
+				),
+				array( // la date de début d'une pub existante se trouve entre $debut et $fin (intersection)
+					'key'     => 'dateDeb',
+					'value'   => array($debut, $fin),
+					'type'    => 'DATE',
+					'compare' => 'BETWEEN'
+				),
+				array( // la date de fin d'une pub existante se trouve entre $debut et $fin (intersection)
+					'key'     => 'dateFin',
+					'value'   => array($debut, $fin),
+					'type'    => 'DATE',
+					'compare' => 'BETWEEN'
+				),
+				/*array( // Intersection entre les deux périodes au niveau de la date de début
 					array(
 						'key'     => 'dateDeb',
 						'value'   => $debut,
@@ -325,7 +352,7 @@ function RPJP_dates_disponibles($post_id){
 						'type'    => 'DATE',
 						'compare' => '<='
 					),
-				),
+				),*/
 			),
 		),
 	);
