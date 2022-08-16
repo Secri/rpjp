@@ -311,48 +311,6 @@ function RPJP_dates_disponibles($post_id){
 					'type'    => 'DATE',
 					'compare' => 'BETWEEN'
 				),
-				/*array( // Intersection entre les deux périodes au niveau de la date de début
-					array(
-						'key'     => 'dateDeb',
-						'value'   => $debut,
-						'type'	  => 'DATE',
-						'compare' => '<=',
-					),
-					array(
-						'key'     => 'dateFin',
-						'value'   => $debut,
-						'type'	  => 'DATE',
-						'compare' => '>=',
-					),
-				),
-				array( // Intersection entre les deux périodes au niveau de la date de fin
-					array(
-						'key'     => 'dateDeb',
-						'value'   => $fin,
-						'type'	  => 'DATE',
-						'compare' => '<=',
-					),
-					array(
-						'key'     => 'dateFin',
-						'value'   => $fin,
-						'type'	  => 'DATE',
-						'compare' => '>=',
-					),
-				),
-				array( // La période sélectionnée englobe une pub avec les mêmes caractéristiques
-					array(
-						'key'     => 'dateDeb',
-						'value'   => $debut,
-						'type'    => 'DATE',
-						'compare' => '>='
-					),
-					array(
-						'key'     => 'dateFin',
-						'value'   => $fin,
-						'type'    => 'DATE',
-						'compare' => '<='
-					),
-				),*/
 			),
 		),
 	);
@@ -430,11 +388,13 @@ function handleStatus ($currentPost) {
 		global $typenow;
 	  
 		if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //Si on se trouve sur la liste de type regie_publicitaire
+			wp_enqueue_script( 'rpjp-confirm-regen', plugins_url( '/js/regen.js', __FILE__), '', '', true );
 			?>
 			<div class="alignleft actions" style="margin-left:12px;padding-left:20px;border-left:1px solid">
 				<form method="post">
 					
-					<input type="submit" name="rpjp_regen_refs" class="button button-secondary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
+					<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
+					<input type="submit" id="rpjp_regen_btn" class="button button-secondary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
 				
 				</form>
 			</div>
@@ -444,7 +404,7 @@ function handleStatus ($currentPost) {
 	add_action( 'init', 'rpjp_regenerate_refs' );
 	/* Fonction qui regénère les références de toutes les pubs */
 	function rpjp_regenerate_refs() {
-		if ( isset ($_POST['rpjp_regen_refs']) ) {
+		if ( isset ($_POST['rpjp_regen_refs']) ) { // Récupère les infos du formulaire ci-dessus
 			global $post;
 			$arg = array(
 				'post_type' => 'regie_publicitaire',
