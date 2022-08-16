@@ -72,7 +72,7 @@ function RPJP_export_posts() {
 				$file = fopen('php://output', 'w');
 				echo "\xEF\xBB\xBF";
 				
-				fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale', 'Référence', 'Statut')); //En-tête du fichier CSV
+				fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale (j)', 'Référence', 'Statut')); //En-tête du fichier CSV
 				
 				
 				while( $my_query->have_posts() ) : $my_query->the_post();
@@ -80,7 +80,7 @@ function RPJP_export_posts() {
 											get_the_title(get_the_ID()),
 											date('d-m-Y', strtotime( get_post_meta( get_the_ID(), 'dateDeb', true ) )),
 											date('d-m-Y', strtotime( get_post_meta( get_the_ID(), 'dateFin', true ) )),
-											floor( ( strtotime( get_post_meta( get_the_ID(), 'dateFin', true )) - strtotime( get_post_meta( get_the_ID(), 'dateDeb', true )) ) / 86400) . ' jours',
+											floor( ( strtotime( get_post_meta( get_the_ID(), 'dateFin', true )) - strtotime( get_post_meta( get_the_ID(), 'dateDeb', true )) ) / 86400),
 											get_post_meta(get_the_ID(), 'ref', true),
 											handleStatus(get_post( get_the_ID(), 'OBJECT' ))
 										 )
@@ -135,7 +135,7 @@ function RPJP_export_posts() {
             $file = fopen('php://output', 'w');
 			echo "\xEF\xBB\xBF";
             
-			fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale', 'Référence', 'Statut')); //En-tête du fichier CSV
+			fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale (j)', 'Référence', 'Statut')); //En-tête du fichier CSV
 			
 			
             foreach ($arr_post as $post) {
@@ -144,7 +144,7 @@ function RPJP_export_posts() {
 										$post->post_title,
 										date('d-m-Y', strtotime($post->dateDeb)),
 										date('d-m-Y', strtotime($post->dateFin)),
-										floor ( ( strtotime($post->dateFin) - strtotime($post->dateDeb) ) / 86400 ) . ' jours',
+										floor ( ( strtotime($post->dateFin) - strtotime($post->dateDeb) ) / 86400 ),
 										$post->ref,
 										handleStatus($post)
 						            )
