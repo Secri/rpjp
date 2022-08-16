@@ -120,6 +120,7 @@ class rpjp_widget extends WP_Widget {
 	// fonction qui crée un élément HTML img à partir de son URL et du terminal client
 	private function rpjp_display_img( $image_url, $display ) {
 		if ( $display == 'mobile' ) {
+			$options = get_option( 'RPJP_options', array() );
 			echo '<div class="get_size" style="display:none">'.$options['RPJP_size'].'</div>'; //On passe get_size pour mobile.js
 			echo wp_get_attachment_image ( attachment_url_to_postid( $image_url ) , 'Full size', false, array( 'class' => 'imageMobile' ) );
 		} else {
