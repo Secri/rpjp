@@ -155,10 +155,12 @@ function RPJP_save_meta_boxes( $post_id ) {
 	if ( ! current_user_can( 'edit_posts', $post_id ) ){ return 'not permitted'; }
     $meta_keys = array('image_desktop','image_mobile');
     foreach($meta_keys as $meta_key){
-		if(isset($_POST[$meta_key]) && intval($_POST[$meta_key])!=''){
-			update_post_meta( $post_id, $meta_key, intval($_POST[$meta_key]));
-		}else{
-			update_post_meta( $post_id, $meta_key, '');
+		if (isset($_POST['action']) && $_POST['action'] == 'editpost') { //Ne s'active pas lorsqu'on trash le post !
+			if(isset($_POST[$meta_key]) && intval($_POST[$meta_key])!=''){
+				update_post_meta( $post_id, $meta_key, intval($_POST[$meta_key]));
+			}else{
+				update_post_meta( $post_id, $meta_key, '');
+			}
 		}
 	}
 	
