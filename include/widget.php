@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function rpjp_register_widget() {
 	register_widget( 'rpjp_widget' );
 }
@@ -14,7 +14,7 @@ class rpjp_widget extends WP_Widget {
 			// widget name
 			__('Régie publicitaire CCI89', ' rpjp_widget_domain'),
 			// widget description
-			array( 'description' => __( 'Permet l\'ajout de publicités avec le custom post-type "régie publicitaire"', 'rpjp_widget_domain' ), )
+			array( 'description' => __( 'Permet l\'affichage des publicités en front-office.', 'rpjp_widget_domain' ), )
 			);
 	}
 	private function getPub($idP,$categ = 'toutes'){
@@ -148,11 +148,14 @@ class rpjp_widget extends WP_Widget {
 		
 	private function display_the_add( $currentId ) { // Crée l'ensemble de la pub et l'affiche dans le widget en fonction de l'ID du cpt regie_publicitaire
 			
+		//Attribut d'action JS pour tracker les clics sur les pubs
+		$analyticsEvent = 'onclick="ga(\'send\', \'event\', \''. get_post_type($currentId) .'\', \'clic\', \''. get_the_title($currentId) .'\');"';
+		
 		echo '<div class="RPJP_img_cont">';
 
 		if(get_post_meta( $currentId, 'follow', true ) == "on"){
 
-			echo '<a rel="nofollow" class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; //crée un élément <a> en nofollow
+			echo '<a '. $analyticsEvent .' rel="nofollow" class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; //crée un élément <a> en nofollow
 
 			echo $this->rpjp_display_img( wp_get_attachment_image_url(get_post_meta( $currentId, 'image_desktop', true ), 'Full Size'), 'desktop' );
 
@@ -174,7 +177,7 @@ class rpjp_widget extends WP_Widget {
 
 		} else {
 
-			echo '<a class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; // crée le lien
+			echo '<a '. $analyticsEvent .' class="lien" href=' . get_post_meta( $currentId, 'lien', true ) . '>'; // crée le lien
 
 			echo $this->rpjp_display_img( wp_get_attachment_image_url(get_post_meta($currentId, 'image_desktop', true), 'Full Size'), 'desktop' );
 
