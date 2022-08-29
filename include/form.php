@@ -1,3 +1,7 @@
+<?php
+	global $post; //Variable globale du post courant
+	$custom = get_post_custom($post->ID); //On récupère les valeurs custom de l'objet post courant dans un tableau
+?>
 <div class="infos_box">
  		
 	<!-- Liste déroulante affichant tous les post-type du site -->
@@ -71,10 +75,6 @@
 	<!-- Checkbox pour demander l'option "NoFollow" dans le lien -->
 	<p class="meta-options field"> 
 	<label for="follow">No follow</label>
-		<?php
-			global $post;
-			$custom = get_post_custom($post->ID);
-		?>
 		<input type="checkbox" name="follow" <?php if(isset( $custom["follow"][0] ) && $custom["follow"][0] == 'on' ) { ?> checked="checked" <?php } ?> />
 	</p>
 	
@@ -111,14 +111,6 @@
 					echo '&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)'
 			?>
 		</label>
-		<?php
-			global $post;
-			$custom = get_post_custom($post->ID);
-			if(isset($custom["mobile"][0])){
-				$mobile = $custom["mobile"][0]; 
-			}
-		?>
 		<input <?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
     </p>
-	
 </div>
