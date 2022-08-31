@@ -42,10 +42,8 @@ function RPJP_custom_post_type() {
 		'exclude_from_search' => true,
 		'show_in_nav_menus'	  => false,
 		'menu_icon' 		  => 'dashicons-megaphone',
-		'as_archive'		  => false,
 		'rewrite'			  => false,
 		'has_archive'         => true,
-		'rewrite'			  => array( 'slug' => 'publicite'),
 
 	);
 	
