@@ -38,7 +38,12 @@ document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un 
 							text: 'La date de début est postérieure à la date de fin.',
 							allowOutsideClick: false
 						});
-						this.value = ""; //On remet la valeur de l'input à 0
+						if (this.id === 'dateDeb') {
+							this.value = "";
+							document.getElementById('dateFin').value = '';
+						} else {
+							this.value = "";
+						}
 					}
 				}
 			}
