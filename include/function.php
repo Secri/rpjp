@@ -165,12 +165,12 @@ function RPJP_save_meta_boxes( $post_id ) {
 	//Sauvegarde le champ de choix du post-type
 	if(isset($_POST['cpt'])){
 		$cpt = $_POST['cpt']; 
-		update_post_meta($post_id, 'cpt', $cpt,sanitize_text_field( $_POST[$cpt] ));
+		update_post_meta($post_id, 'cpt', sanitize_text_field( $cpt ) );
 	}
 	//Sauvegarde le champ de choix de la catégorie
 	if(isset($_POST['categ'])){
 		$categ = $_POST['categ']; 
-		update_post_meta($post_id, 'categ', $categ,sanitize_text_field( $_POST[$categ] ));
+		update_post_meta($post_id, 'categ', sanitize_text_field( $categ ) );
 	}
 	//Sauvegarde l'état de la checkbox "follow"
 	if(isset($_POST['follow'])){ // Si la case est cochée à la soumission du formulaire
