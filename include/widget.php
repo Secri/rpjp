@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 function rpjp_register_widget() {
 	register_widget( 'rpjp_widget' );
 }
