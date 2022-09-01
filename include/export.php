@@ -14,16 +14,17 @@ function RPJP_add_export_button( $which ) {
     if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //teste si l'on se trouve sur le bon post-type 
         ?>
 		<!-- permet de renseigner les dates voulues pour l'export ou d'exporter tout -->
-		<div class="alignleft actions" style="margin-left:12px;padding-left:20px;border-left:1px solid">
+		<div class="alignleft actions">
 			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp_export' ) ?></b>
-			<form method="get">
-				
+			<!--<form method="get"> Crée un conflit avec la soumission des bulk actions -->
+				du
 				<input type="date" id="dateDeb" name="debut"></input>
+				au
 				<input type="date" id="dateFin" name="fin"></input>
 				<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter'); ?>" />
 				<input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités'); ?>" />
 			
-			</form>
+			<!--</form>-->
 		</div>
         <?php
     }
