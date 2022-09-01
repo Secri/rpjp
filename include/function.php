@@ -229,7 +229,7 @@ function RPJP_verif($post_id){
 }
 
 add_action('post_updated_messages','RPJP_show_error',1000);
-/*Fonction qui affiche l'erreur en cas de dates invalides*/
+/* Fonction qui affiche l'erreur en cas de dates invalides */
 function RPJP_show_error(){
 	$debut = strtotime(get_post_meta( get_the_ID(), 'dateDeb', true )); //récupère la date de début
 	$fin = strtotime(get_post_meta( get_the_ID(), 'dateFin', true )); //récupère la date de fin
@@ -390,14 +390,14 @@ function handleStatus ($currentPost) {
 		
 		global $typenow;
 	  
-		if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //Si on se trouve sur la liste de type regie_publicitaire
+		if ( 'regie_publicitaire' === $typenow && 'bottom' === $which ) { //Si on se trouve sur la liste de type regie_publicitaire
 			wp_enqueue_script( 'rpjp-confirm-regen', plugins_url( '/js/regen.js', __FILE__), '', '', true );
 			?>
-			<div class="alignleft actions" style="margin-left:12px;padding-left:20px;border-left:1px solid">
+			<div class="alignleft actions">
 				<form method="post">
 					
 					<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
-					<input type="submit" id="rpjp_regen_btn" class="button button-secondary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
+					<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
 				
 				</form>
 			</div>
@@ -437,3 +437,11 @@ remove_action( 'shutdown', 'wp_ob_end_flush_all', 1 );
 add_action( 'shutdown', function() {
    while ( @ob_end_flush() );
 } );
+
+/* gestion des actions bulk disponibles dans la liste des posts */
+add_action( 'bulk_actions-edit-regie_publicitaire', 'rpjp_remove_default_bulk_actions' );
+
+function rpjp_remove_default_bulk_actions( $bulk_array ) {
+	unset( $bulk_array[ 'edit' ] );
+	return $bulk_array;
+}
