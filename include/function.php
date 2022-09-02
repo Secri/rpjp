@@ -394,12 +394,8 @@ function handleStatus ($currentPost) {
 			wp_enqueue_script( 'rpjp-confirm-regen', plugins_url( '/js/regen.js', __FILE__), '', '', true );
 			?>
 			<div class="alignleft actions">
-				<form method="post">
-					
-					<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
-					<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
-				
-				</form>
+				<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
+				<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
 			</div>
 			<?php
 		}
@@ -407,7 +403,7 @@ function handleStatus ($currentPost) {
 	add_action( 'init', 'rpjp_regenerate_refs' );
 	/* Fonction qui regénère les références de toutes les pubs */
 	function rpjp_regenerate_refs() {
-		if ( isset ($_POST['rpjp_regen_refs']) ) { // Récupère les infos du formulaire ci-dessus
+		if ( isset ($_GET['rpjp_regen_refs']) ) { // Récupère les infos du formulaire ci-dessus
 			global $post;
 			$arg = array(
 				'post_type' => 'regie_publicitaire',
