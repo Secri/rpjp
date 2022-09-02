@@ -14,7 +14,7 @@ function rpjp_validate_regen(e) {
 		allowOutsideClick: false
 	}).then((result) => {
 		if (result.isConfirmed) {
-			regenBtn.parentElement.submit();
+			document.getElementById('posts-filter').submit();
 		}
 	})
 }
