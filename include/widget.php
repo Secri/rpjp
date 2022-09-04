@@ -12,9 +12,9 @@ class rpjp_widget extends WP_Widget {
 			// widget ID
 			'rpjp_widget',
 			// widget name
-			__('Régie publicitaire CCI89', ' rpjp_widget_domain'),
+			__('Régie publicitaire CCI89', 'rpjp-plugin'),
 			// widget description
-			array( 'description' => __( 'Permet l\'affichage des publicités en front-office.', 'rpjp_widget_domain' ), )
+			array( 'description' => __( 'Permet l\'affichage des publicités en front-office.', 'rpjp-plugin' ), )
 			);
 	}
 	private function getPub($idP,$categ = 'toutes'){
@@ -204,7 +204,7 @@ class rpjp_widget extends WP_Widget {
 
 	/*Gestion de l'affichage des options sur le backoffice */
 	public function form( $instance ) {
-        echo '<br>Ce widget est automatique et ne nécessite pas de paramètres.';
+        _e('<br>Ce widget est automatique et ne nécessite pas de paramètres.', 'rpjp-plugin');
 	}
 	
 	public function update( $new_instance, $old_instance ) {
