@@ -73,7 +73,15 @@ function RPJP_export_posts() {
 				$file = fopen('php://output', 'w');
 				echo "\xEF\xBB\xBF";
 				
-				fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale (j)', 'Référence', 'Statut')); //En-tête du fichier CSV
+				fputcsv($file, array( //En-tête du fichier CSV
+								__('Titre', 'rpjp-plugin'),
+								__('Date de début', 'rpjp-plugin'),
+								__('Date de fin', 'rpjp-plugin'),
+								__('Durée totale (j)', 'rpjp-plugin'),
+								__('Référence', 'rpjp-plugin'),
+								__('Statut', 'rpjp-plugin')
+						)
+			         );
 				
 				
 				while( $my_query->have_posts() ) : $my_query->the_post();
@@ -136,7 +144,15 @@ function RPJP_export_posts() {
             $file = fopen('php://output', 'w');
 			echo "\xEF\xBB\xBF";
             
-			fputcsv($file, array('Titre', 'Date de début', 'Date de fin', 'Durée totale (j)', 'Référence', 'Statut')); //En-tête du fichier CSV
+			fputcsv($file, array( //En-tête du fichier CSV
+								__('Titre', 'rpjp-plugin'),
+								__('Date de début', 'rpjp-plugin'),
+								__('Date de fin', 'rpjp-plugin'),
+								__('Durée totale (j)', 'rpjp-plugin'),
+								__('Référence', 'rpjp-plugin'),
+								__('Statut', 'rpjp-plugin')
+						)
+			         );
 			
 			
             foreach ($arr_post as $post) {
