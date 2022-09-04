@@ -5,12 +5,12 @@ add_filter('manage_regie_publicitaire_posts_columns', function ( $columns ){
     unset($columns['date']);
     return array_merge($columns, 
 	array(
-			'dateDeb' => __('Date de début'),
-			'dateFin' => __('Date de fin'),
-			'cpt'     => __('Type de contenu'),
-			'categ'   => __('Catégorie'),
-			'ref' => __('Référence'),
-			'statut'  => __('Statut')
+			'dateDeb' => __('Date de début', 'rpjp-plugin'),
+			'dateFin' => __('Date de fin', 'rpjp-plugin'),
+			'cpt'     => __('Type de contenu', 'rpjp-plugin'),
+			'categ'   => __('Catégorie', 'rpjp-plugin'),
+			'ref'     => __('Référence', 'rpjp-plugin'),
+			'statut'  => __('Statut', 'rpjp-plugin')
 		)
 	);
 } );
