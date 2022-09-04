@@ -11,7 +11,7 @@ function RPJP_settings_init() {
     //enregistre une nouvelle section de paramètres
     add_settings_section(
         'RPJP_section', //ID
-        __( '', 'RPJP_settings' ), //titre
+        __( '', 'rpjp-plugin' ), //titre
 		'RPJP_section_callback', //callback
         'RPJP_settings' //slug
     );
@@ -19,7 +19,7 @@ function RPJP_settings_init() {
     //ajoute un nouveau champs de paramètre
 	add_settings_field(
         'RPJP_taxo', //ID
-        __( 'Taxonomie', 'RPJP_settings' ), //titre
+        __( 'Taxonomie', 'rpjp-plugin' ), //titre
         'RPJP_field_taxo', //callback
         'RPJP_settings', //slug
         'RPJP_section', //section où le champ se trouve
@@ -32,7 +32,7 @@ function RPJP_settings_init() {
 	
     add_settings_field(
         'RPJP_parent', //ID
-        __( 'Terme parent', 'RPJP_settings' ), //titre
+        __( 'Terme parent', 'rpjp-plugin' ), //titre
         'RPJP_field_parent', //callback
         'RPJP_settings', //slug
         'RPJP_section', //section où le champ se trouve
@@ -45,7 +45,7 @@ function RPJP_settings_init() {
 	
 	add_settings_field(
         'RPJP_size', //ID
-        __( 'Version mobile', 'RPJP_settings' ), //titre
+        __( 'Version mobile', 'rpjp-plugin' ), //titre
         'RPJP_field_size', //callback
         'RPJP_settings', //slug
         'RPJP_section', //section où le champ se trouve
@@ -58,7 +58,7 @@ function RPJP_settings_init() {
 	
 	add_settings_field(
         'RPJP_prefixe', //ID
-        __( 'Préfixe (optionnel)', 'RPJP_settings' ), //titre
+        __( 'Préfixe (optionnel)', 'rpjp-plugin' ), //titre
         'RPJP_field_prefixe', //callback
         'RPJP_settings', //slug
         'RPJP_section', //section où le champ se trouve
@@ -70,7 +70,7 @@ function RPJP_settings_init() {
     );
 		add_settings_field(
         'RPJP_suffixe', //ID
-        __( 'Suffixe (optionnel)', 'RPJP_settings' ), //titre
+        __( 'Suffixe (optionnel)', 'rpjp-plugin' ), //titre
         'RPJP_field_suffixe', //callback
         'RPJP_settings', //slug
         'RPJP_section', //section où le champ se trouve
@@ -85,7 +85,7 @@ function RPJP_settings_init() {
 /*Fonction de callback*/
 function RPJP_section_callback( $args ) {
     ?>
-    <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Section de réglage de l\'extension réservée au webmaster.', 'RPJP_settings' ); ?></p>
+    <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Section de réglage de l\'extension réservée au webmaster.', 'rpjp-plugin' ); ?></p>
     <?php
 }
  
@@ -102,7 +102,7 @@ function RPJP_field_taxo( $args ){
 			value="<?php echo isset( $options['RPJP_taxo'] ) && $options['RPJP_taxo'] != '' ?  $options['RPJP_taxo'] : 'category'; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'rpjp-plugin' ); ?>
     </p>
     <?php
 }
@@ -118,7 +118,7 @@ function RPJP_field_parent( $args ) {
 			value="<?php echo isset( $options['RPJP_parent'] ) ?  $options['RPJP_parent'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'rpjp-plugin' ); ?>
     </p>
     <?php
 }
@@ -135,7 +135,7 @@ function RPJP_field_size($args){
 			value="<?php echo isset( $options['RPJP_size'] ) ?  $options['RPJP_size'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez une largeur en PX en dessous de laquelle s\'affichera la version mobile.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez une largeur en PX en dessous de laquelle s\'affichera la version mobile.', 'rpjp-plugin' ); ?>
     </p>
     <?php
 }
@@ -151,7 +151,7 @@ function RPJP_field_prefixe($args){
 			value="<?php echo isset( $options['RPJP_prefixe'] ) ?  $options['RPJP_prefixe'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez un préfixe pour la génération automatique des références.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez un préfixe pour la génération automatique des références.', 'rpjp-plugin' ); ?>
     </p>
     <?php
 }
@@ -167,7 +167,7 @@ function RPJP_field_suffixe($args){
 			value="<?php echo isset( $options['RPJP_suffixe'] ) ?  $options['RPJP_suffixe'] : false; ?>">
     </input>
     <p class="description">
-        <?php esc_html_e( 'Entrez un suffixe pour la génération automatique des références.', 'RPJP_settings' ); ?>
+        <?php esc_html_e( 'Entrez un suffixe pour la génération automatique des références.', 'rpjp-plugin' ); ?>
     </p>
     <?php
 }
@@ -196,7 +196,7 @@ function wporg_options_page_html() {
  
     //vérifie que l'utilisateur a passé des paramètres
     if ( isset( $_GET['settings-updated'] ) ) {
-        add_settings_error( 'wporg_messages', 'wporg_message', __( 'Paramètres sauvegardés', 'RPJP_settings' ), 'updated' ); //affiche un message pour confirmer l'enregistrement des paramètres
+        add_settings_error( 'wporg_messages', 'wporg_message', __( 'Paramètres sauvegardés', 'rpjp-plugin' ), 'updated' ); //affiche un message pour confirmer l'enregistrement des paramètres
     }
  
     settings_errors( 'wporg_messages' ); //affiche les messages d'actualisation ou d'erreur
