@@ -6,7 +6,7 @@
  		
 	<!-- Liste déroulante affichant tous les post-type du site -->
 	<p class="meta-options field">
-        <label for="cpt">Page d'affichage<strong style="color:red">*</strong></label>
+        <label for="cpt"><?php _e('Page d\'affichage', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <select id="cpt" name="cpt" required>
 			<option value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'cpt', true ) ); ?>">-- <?php echo esc_attr( get_post_meta( get_the_ID(), 'cpt', true ) ); ?> --</option>
 			<?php 
@@ -23,10 +23,10 @@
 	
 	<!-- Liste déroulante affichant les catégories disponibles pour le post-type choisi -->
 	<p class="meta-options field">
-        <label for="categ">Catégorie d'affichage<strong style="color:red">*</strong></label>
+        <label for="categ"><?php _e('Catégorie d\'affichage', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         
         <select id="categ" name="categ" required>
-			<option value="toutes">Afficher sur toutes les pages</option>
+			<option value="toutes"><?php _e('Afficher sur toutes les pages', 'rpjp-plugin'); ?></option>
 			<?php	
 				$categ = get_post_meta( get_the_ID(), 'categ', true );
 				$options = get_option( 'RPJP_options', array() ); //on récupère les données de la page d'options
@@ -63,7 +63,7 @@
 	
 	<!-- Zone de texte où définir le lien de redirection de la publicité -->
     <p class="meta-options field">
-        <label for="lien">Lien de redirection<strong style="color:red">*</strong></label>
+        <label for="lien"><?php _e('Lien de redirection', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <input id="lien"
                type="text"
                name="lien"
@@ -74,7 +74,7 @@
 	
 	<!-- Checkbox pour demander l'option "NoFollow" dans le lien -->
 	<p class="meta-options field"> 
-	<label for="follow">No follow</label>
+	<label for="follow"><?php _e('Nofollow', 'rpjp-plugin'); ?></label>
 		<input type="checkbox" name="follow" <?php if(isset( $custom["follow"][0] ) && $custom["follow"][0] == 'on' ) { ?> checked="checked" <?php } ?> />
 	</p>
 	
@@ -84,7 +84,7 @@
 		wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );	
 	?> 
     <p class="meta-options field">
-        <label for="dateDeb">Date de début<strong style="color:red">*</strong></label>
+        <label for="dateDeb"><?php _e('Date de début', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <input id="dateDeb"
                type="date"
                name="dateDeb"
@@ -93,7 +93,7 @@
 		>
     </p>
 	<p class="meta-options field">
-        <label for="dateFin">Date de fin<strong style="color:red">*</strong></label>
+        <label for="dateFin"><?php _e('Date de fin', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <input id="dateFin"
                type="date"
                name="dateFin"
@@ -105,10 +105,11 @@
 	<!-- Ajout d'une checkbox pour activer ou désactiver la mise en page de pub sur mobile -->
 	<p class="meta-options field"> 
 		<label for="mobile">
-			Pub sur mobile
-			<?php
-				if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) 
-					echo '&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)'
+			<?php 
+				_e('Pub sur mobile', 'rpjp-plugin');
+				if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) {
+					_e('&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)', 'rpjp-plugin');
+				}
 			?>
 		</label>
 		<input <?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
