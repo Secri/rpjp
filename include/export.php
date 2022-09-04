@@ -15,7 +15,7 @@ function RPJP_add_export_button( $which ) {
         ?>
 		<!-- permet de renseigner les dates voulues pour l'export ou d'exporter tout -->
 		<div class="alignleft actions">
-			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp_export' ) ?></b>
+			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp-plugin' ) ?></b>
 			<!--<form method="get"> Crée un conflit avec la soumission des bulk actions -->
 				du
 				<input type="date" id="dateDeb" name="debut"></input>
