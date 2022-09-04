@@ -10,19 +10,19 @@
 <?php   	
 			if( $meta_key == 'image_desktop' ) {
 ?>
-				<p style="color:grey">Sélectionnez l'image pour l'affichage sur ordinateur (en px 345 x 270) <strong style="color:red">*</strong> :</p>
+				<p style="color:grey"><?php _e("Sélectionnez l'image pour l'affichage sur ordinateur (en px 345 x 270)",'rpjp-plugin'); ?> <strong style="color:red">*</strong> :</p>
 <?php 	
 			} else if( $meta_key == 'image_mobile' ) {
 ?>
-				<p style="color:grey">Sélectionnez l'image pour l'affichage sur mobile (en px 216 x 1024) :</p>
+				<p style="color:grey"><?php _e("Sélectionnez l'image pour l'affichage sur mobile (en px 216 x 1024)", 'rpjp-plugin' ?> :</p>
 <?php
 			} 
 ?>
             <img src="<?php echo ($image_meta_val!=''?wp_get_attachment_image_src( $image_meta_val,'large')[0]:''); ?>" style="display: <?php echo ($image_meta_val!=''?'block':'none'); ?>" alt="">
             
-			<a class="addimage button" onclick="RPJP_custom_postimage_add_image('<?php echo $meta_key; ?>');"><?php _e('Ajouter/modifier une image','regie_publicitaire'); ?></a><br>
+			<a class="addimage button" onclick="RPJP_custom_postimage_add_image('<?php echo $meta_key; ?>');"><?php _e('Ajouter/modifier une image','rpjp-plugin'); ?></a><br>
             
-			<a class="removeimage" style="color:#a00;cursor:pointer;display: <?php echo ($image_meta_val != '' ? 'block' : 'none'); ?>" onclick="custom_postimage_remove_image('<?php echo $meta_key; ?>');"><?php _e('Supprimer l\'image','rpjp_domain'); ?></a>
+			<a class="removeimage" style="color:#a00;cursor:pointer;display: <?php echo ($image_meta_val != '' ? 'block' : 'none'); ?>" onclick="custom_postimage_remove_image('<?php echo $meta_key; ?>');"><?php _e('Supprimer l\'image','rpjp-plugin'); ?></a>
             
 			<input type="hidden" name="<?php echo $meta_key; ?>" id="<?php echo $meta_key; ?>" value="<?php echo $image_meta_val; ?>" />
        
@@ -36,9 +36,9 @@
 			var $wrapper = jQuery('#'+key+'_wrapper');
 
 			custom_postimage_uploader = wp.media.frames.file_frame = wp.media({
-				title: "<?php _e('Choisir une image','regie_publicitaire'); ?>",
+				title: "<?php _e('Choisir une image','rpjp-plugin'); ?>",
 				button: {
-					text: "<?php _e('Sélectionner cette image','regie_publicitaire'); ?>"
+					text: "<?php _e('Sélectionner cette image','rpjp-plugin'); ?>"
 				},
 				multiple: false
 			});
