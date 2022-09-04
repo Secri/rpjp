@@ -21,8 +21,8 @@ function RPJP_add_export_button( $which ) {
 				<input type="date" id="dateDeb" name="debut"></input>
 				au
 				<input type="date" id="dateFin" name="fin"></input>
-				<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter'); ?>" />
-				<input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités'); ?>" />
+				<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter', 'rpjp-plugin'); ?>" />
+				<input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités', 'rpjp-plugin'); ?>" />
 			
 			<!--</form>-->
 		</div>
@@ -92,7 +92,7 @@ function RPJP_export_posts() {
 				
 				?>
 					<div class="notice notice-warning is-dismissible" >
-						<p><?php _e( 'Aucune donnée à exporter entre le '. date('d-m-Y', $debut) .' et le '. date('d-m-Y', $fin) .'.', 'RPJP' ); ?></p>
+						<p><?php _e( 'Aucune donnée à exporter entre le '. date('d-m-Y', $debut) .' et le '. date('d-m-Y', $fin) .'.', 'rpjp-plugin' ); ?></p>
 					</div>
 				<?php
 
@@ -102,13 +102,13 @@ function RPJP_export_posts() {
 		} else if( $debut > $fin ) {
 			?>
 				<div class="notice notice-warning is-dismissible" >
-					<p><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'RPJP' ); ?></p>
+					<p><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'rpjp-plugin' ); ?></p>
 				</div>
 			<?php
 		}else{
 			?>
 				<div class="notice notice-warning is-dismissible" >
-					<p><?php _e( 'Veuillez entrer des dates.', 'RPJP' ); ?></p>
+					<p><?php _e( 'Veuillez entrer des dates.', 'rpjp-plugin' ); ?></p>
 				</div>
 			<?php
 		}
@@ -155,7 +155,7 @@ function RPJP_export_posts() {
         } else {
 			?>
 				<div class="notice notice-warning is-dismissible" >
-					<p><?php _e( 'Aucune donnée à exporter.', 'RPJP' ); ?></p>
+					<p><?php _e( 'Aucune donnée à exporter.', 'rpjp-plugin' ); ?></p>
 				</div>
 			<?php
 		}
