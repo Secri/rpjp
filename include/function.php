@@ -8,28 +8,28 @@ function RPJP_custom_post_type() {
 	// On rentre les différentes dénominations de notre custom post type qui seront affichées dans l'administration
 	$labels = array(
 		//Le nom 
-		'name'                => _x( 'Régie publicitaire', 'Post Type General Name'),
+		'name'                => _x( 'Régie publicitaire', 'Post Type General Name', 'rpjp-plugin'),
 		//Le nom au singulier
-		'singular_name'       => _x( 'Publicité', 'Post Type Singular Name'),
+		'singular_name'       => _x( 'Publicité', 'Post Type Singular Name', 'rpjp-plugin'),
 		//Le libellé affiché dans le menu
-		'menu_name'           => __( 'Régie publicitaire'),
+		'menu_name'           => __( 'Régie publicitaire', 'rpjp-plugin'),
 		//Les différents libellés de l'administration
-		'all_items'           => __( 'Toutes les publicités'),
-		'view_item'           => __( 'Voir les publicités'),
-		'add_new_item'        => __( 'Ajouter une nouvelle publicité'),
-		'add_new'             => __( 'Ajouter'),
-		'edit_item'           => __( 'Editer la publicité'),
-		'update_item'         => __( 'Modifier la publicité'),
-		'search_items'        => __( 'Rechercher une publicité'),
-		'not_found'           => __( 'Non trouvée'),
-		'not_found_in_trash'  => __( 'Non trouvée dans la corbeille'),
+		'all_items'           => __( 'Toutes les publicités', 'rpjp-plugin'),
+		'view_item'           => __( 'Voir les publicités', 'rpjp-plugin'),
+		'add_new_item'        => __( 'Ajouter une nouvelle publicité', 'rpjp-plugin'),
+		'add_new'             => __( 'Ajouter', 'rpjp-plugin'),
+		'edit_item'           => __( 'Editer la publicité', 'rpjp-plugin'),
+		'update_item'         => __( 'Modifier la publicité', 'rpjp-plugin'),
+		'search_items'        => __( 'Rechercher une publicité', 'rpjp-plugin'),
+		'not_found'           => __( 'Non trouvée', 'rpjp-plugin'),
+		'not_found_in_trash'  => __( 'Non trouvée dans la corbeille', 'rpjp-plugin'),
 	);
 	
 	//On peut définir ici d'autres options pour notre custom post type
 	
 	$args = array(
-		'label'               => __( 'Régie publicitaire'),
-		'description'         => __( 'Gestion des publicités du site'),
+		'label'               => __( 'Régie publicitaire', 'rpjp-plugin'),
+		'description'         => __( 'Gestion des publicités du site', 'rpjp-plugin'),
 		'labels'              => $labels,
 		//On définit les options disponibles dans l'éditeur de notre custom post type
 		'supports'            => array( 'title','thumbnail' ),
@@ -116,12 +116,12 @@ function RPJP_statut_callback($post){ //statut
 	?>
 	<!-- Affiche une liste déroulante qui indique le statut de la publicité -->
 	<p class="meta-options field">
-    		<select id="statut" name="statut" disabled>
-			<option value="Programmée" <?php if ( handleStatus($post) == 'Programmée' ) { echo "selected";} ?>>Programmée</option>
-			<option value="Brouillon" <?php if ( handleStatus($post) == 'Brouillon' ) { echo "selected";} ?>>Brouillon</option>
-			<option value="Publiée" <?php if ( handleStatus($post) == 'Publiée' ) { echo "selected";} ?>>Publiée</option>
-			<option value="Dépassée" <?php if ( handleStatus($post) == 'Dépassée' ) { echo "selected";} ?>>Dépassée</option>
-			<option value="Erreur" <?php if ( handleStatus($post) == 'Erreur' ) { echo "selected";} ?> >Erreur</option>
+    	<select id="statut" name="statut" disabled>
+			<option value="Programmée" <?php if ( handleStatus($post) == 'Programmée' ) { echo "selected";} ?>><?php _e('Programmée', 'rpjp-plugin'); ?></option>
+			<option value="Brouillon" <?php if ( handleStatus($post) == 'Brouillon' ) { echo "selected";} ?>><?php _e('Brouillon', 'rpjp-plugin'); ?></option>
+			<option value="Publiée" <?php if ( handleStatus($post) == 'Publiée' ) { echo "selected";} ?>><?php _e('Publiée', 'rpjp-plugin'); ?></option>
+			<option value="Dépassée" <?php if ( handleStatus($post) == 'Dépassée' ) { echo "selected";} ?>><?php _e('Dépassée', 'rpjp-plugin'); ?></option>
+			<option value="Erreur" <?php if ( handleStatus($post) == 'Erreur' ) { echo "selected";} ?> ><?php _e('Erreur', 'rpjp-plugin'); ?></option>
 		</select>
 	</p>
 	<?php
@@ -236,7 +236,7 @@ function RPJP_show_error(){
 	if($debut > $fin){ //si la date de début est postérieure
 		?>
 		<div class="notice notice-error" >
-			<p><strong><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'RPJP' ); ?></strong></p>
+			<p><b><?php _e( 'La date de début ne peut pas être postérieure à la date de fin.', 'rpjp-plugin' ); ?></b></p>
 		</div>
 		<?php	
 	}
@@ -359,26 +359,26 @@ function handleStatus ($currentPost) {
 	$expirationTime = strtotime( $currentPost->dateFin ) - time();
 	
 	if ( $currentPost->post_status == 'trash' ) {
-		return __('Corbeille', 'RPJP_status');
+		return __('Corbeille', 'rpjp-plugin');
 	}
 		
 	else if ( $currentPost->post_status == 'auto-draft' || ( $currentPost->post_status == 'draft' && $expirationTime > 0 && $expirationTime > $startingTime ) ) {
-		return __('Brouillon', 'RPJP_status');
+		return __('Brouillon', 'rpjp-plugin');
 	}
 		
 	else if ( $currentPost->post_status == 'publish' && $startingTime > 0 && $expirationTime > $startingTime ) {
-		return __('Programmée', 'RPJP_status');
+		return __('Programmée', 'rpjp-plugin');
 	}
 	
 	else if ( $currentPost->post_status == 'publish' && $expirationTime > 0 && $expirationTime > $startingTime ) {
-		return __('Publiée', 'RPJP_status');
+		return __('Publiée', 'rpjp-plugin');
 	}
 	
 	else if ( ($currentPost->post_status == 'publish' && $expirationTime < 0 && $expirationTime > $startingTime) || ($currentPost->post_status == 'draft' && $expirationTime < 0 && $expirationTime > $startingTime) ) {
-		return __('Dépassée', 'RPJP_status');
+		return __('Dépassée', 'rpjp-plugin');
 	}
 	
-	else { return __('Erreur', 'RPJP_status'); }
+	else { return __('Erreur', 'rpjp-plugin'); }
 }
 
 /* REGENERATE REFS */
@@ -395,7 +395,7 @@ function handleStatus ($currentPost) {
 			?>
 			<div class="alignleft actions">
 				<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
-				<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp_regen'); ?>" />
+				<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp-plugin'); ?>" />
 			</div>
 			<?php
 		}
