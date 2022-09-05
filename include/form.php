@@ -107,11 +107,11 @@
 		<label for="mobile">
 			<?php 
 				_e('Pub sur mobile', 'rpjp-plugin');
-				if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) {
+				if ( isset ($options['RPJP_size']) && $options['RPJP_size'] == "" ) {
 					_e('&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)', 'rpjp-plugin');
 				}
 			?>
 		</label>
-		<input <?php if ( isset ($options['RPJP_div']) && $options['RPJP_div'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
+		<input <?php if ( isset ($options['RPJP_size']) && $options['RPJP_size'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
     </p>
 </div>
