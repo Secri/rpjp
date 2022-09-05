@@ -14,7 +14,7 @@
 <?php 	
 			} else if( $meta_key == 'image_mobile' ) {
 ?>
-				<p style="color:grey"><?php _e("Sélectionnez l'image pour l'affichage sur mobile (en px 216 x 1024)", 'rpjp-plugin' ?> :</p>
+				<p style="color:grey"><?php _e("Sélectionnez l'image pour l'affichage sur mobile (en px 216 x 1024)", 'rpjp-plugin') ?> :</p>
 <?php
 			} 
 ?>
