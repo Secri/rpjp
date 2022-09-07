@@ -381,43 +381,51 @@ function handleStatus ($currentPost) {
 	else { return __('Erreur', 'rpjp-plugin'); }
 }
 
-/* REGENERATE REFS */
-	/*Enregistre le bouton sur le hook voulu (page qui liste toutes les pubs)*/
-	add_action( 'manage_posts_extra_tablenav', 'RPJP_regen_refs_button', 20, 1 );
-
-	/*Ajout de boutons sur la page listant toutes les publicités*/
-	function RPJP_regen_refs_button( $which ) {
-		
-		global $typenow;
-	  
-		if ( 'regie_publicitaire' === $typenow && 'bottom' === $which ) { //Si on se trouve sur la liste de type regie_publicitaire
-			wp_enqueue_script( 'rpjp-confirm-regen', plugins_url( '/js/regen.js', __FILE__), '', '', true );
-			?>
-			<div class="alignleft actions">
-				<input type='hidden' name="rpjp_regen_refs" value="rpjp_regen_refs" /> <!-- C'est cet input qui va envoyer les infos au moment du submit en JS -->
-				<input type="submit" id="rpjp_regen_btn" class="button button-primary" value="<?php _e('Regénérer les références', 'rpjp-plugin'); ?>" />
-			</div>
-			<?php
-		}
+/* CUSTOM BULK ACTION REGENERATE REFS */
+	
+	add_filter( 'bulk_actions-edit-regie_publicitaire', 'rpjp_custom_bulk_actions' );
+	//On ajoute l'option dans la liste des actions groupées
+	function rpjp_custom_bulk_actions( $bulk_array ) {
+		$bulk_array[ 'rpjp_regen_refs' ] = __('Regénérer les références', 'rpjp-plugin');
+		return $bulk_array;
 	}
-	add_action( 'init', 'rpjp_regenerate_refs' );
-	/* Fonction qui regénère les références de toutes les pubs */
-	function rpjp_regenerate_refs() {
-		if ( isset ($_GET['rpjp_regen_refs']) ) { // Récupère les infos du formulaire ci-dessus
-			global $post;
-			$arg = array(
-				'post_type' => 'regie_publicitaire',
-				'post_status' => array('publish', 'draft'),
-				'posts_per_page' => -1,
-			);
-			$arr_post = get_posts($arg);
+
+	add_filter( 'handle_bulk_actions-edit-regie_publicitaire', 'rpjp_bulk_action_handler', 10, 3 );
+	//Gestion de l'action
+	function rpjp_bulk_action_handler( $redirect, $doaction, $object_ids ) {
+		//On enlève le paramètre de l'url (destiné à l'affichage du message)
+		$redirect = remove_query_arg(
+			array( 'bulk_regen_refs' ),
+			$redirect
+		);
+		
+		//Code pour regénérer les références
+		if ( 'rpjp_regen_refs' === $doaction ) {
 			$options = get_option('RPJP_options', array()); 
-			foreach($arr_post as $post){
-					$initialCrea = explode( '-', $post->ref );
-					$fullPrefixe = $options['RPJP_prefixe'] != '' ? $options['RPJP_prefixe'] . '-' : '';
-					$fullSuffixe = $options['RPJP_suffixe'] != '' ? '-' . $options['RPJP_suffixe'] : '';
-					update_post_meta( $post->ID, 'ref', sanitize_text_field( strtoupper($fullPrefixe) . date( 'mY', strtotime($post->post_date) ) . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
+			foreach( $object_ids as $post_id ) {
+				$initialCrea = explode( '-', get_post( $post_id )->ref );
+				$fullPrefixe = $options['RPJP_prefixe'] != '' ? $options['RPJP_prefixe'] . '-' : '';
+				$fullSuffixe = $options['RPJP_suffixe'] != '' ? '-' . $options['RPJP_suffixe'] : '';
+				update_post_meta( $post_id, 'ref', sanitize_text_field( strtoupper($fullPrefixe) . date( 'mY', strtotime(get_post( $post_id )->post_date) ) . "-" . $post_id . strtoupper($fullSuffixe) ) );
 			}
+			// On ajouter les paramètres dans l'URL pour afficher les messages
+			$redirect = add_query_arg(
+				'bulk_regen_refs', // just a parameter for URL
+				count( $object_ids ), // how many posts have been selected
+				$redirect
+			);
+		}
+		
+		return $redirect;
+	}
+	//Affiche les messages suite au changement des réfs
+	add_action('admin_notices', 'rpjp_bulk_action_notices');
+	function rpjp_bulk_action_notices() {
+		if ( ! empty( $_REQUEST['bulk_regen_refs'] ) ) {
+			$count = (int) $_REQUEST['bulk_regen_refs'];
+			$message = sprintf ( _n( 'La référence de la publicité a été mise à jour.', 'Les références de <b>%d</b> publicités ont été mises à jour.', $count, 'rpjp-plugin'), $count );
+			
+			echo "<div class=\"updated notice is-dismissible\"><p>{$message}</p></div>";
 		}
 	}
 
