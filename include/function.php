@@ -149,7 +149,7 @@ function RPJP_save_meta_boxes( $post_id ) {
 		update_post_meta( $post_id, 'ref', sanitize_text_field( strtoupper($fullPrefixe) . get_the_date('mY') . "-" . get_the_ID(). strtoupper($fullSuffixe) ) );
 	}
 		
-	//Sauvegarde l'image ajoutée par la version mobile
+	//Sauvegarde les images
 	if ( ! current_user_can( 'edit_posts', $post_id ) ){ return 'not permitted'; }
     $meta_keys = array('image_desktop','image_mobile');
     foreach($meta_keys as $meta_key){
