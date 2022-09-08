@@ -20,8 +20,8 @@ document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un 
 				//window.alert("Vous ne pouvez pas sélectionner une année antérieure à " + currentYear + '.');
 				Swal.fire({ //Fenêtre d'alerte Sweet Alert 2
 					icon: 'error',
-					title: 'Erreur',
-					text: 'Vous ne pouvez pas sélectionner une date dont l\'année est antérieure à ' + currentYear + '.',
+					title: rpjp_check_dates_vars.error_title, //Récupération du string depuis wp_localize_script()
+					text: rpjp_check_dates_vars.date_ante + currentYear + '.', //Récupération du string depuis wp_localize_script()
 					allowOutsideClick: false
 				});
 				this.value = ""; //On remet la valeur de l'input à 0
@@ -34,8 +34,8 @@ document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un 
 						//window.alert("La date de début est postérieure à la date de fin, réessayez.");
 						Swal.fire({ //Fenêtre d'alerte Sweet Alert 2
 							icon: 'error',
-							title: 'Erreur',
-							text: 'La date de début est postérieure à la date de fin.',
+							title: rpjp_check_dates_vars.error_title, //Récupération du string depuis wp_localize_script()
+							text: rpjp_check_dates_vars.date_post, //Récupération du string depuis wp_localize_script()
 							allowOutsideClick: false
 						});
 						if (this.id === 'dateDeb') {
