@@ -79,10 +79,6 @@
 	</p>
 	
 	<!-- Calendrier pour saisir les dates de début et de fin -->
-	<?php 
-		//On charge le contrôle JS des dates et la librairie sweet alert
-		wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );	
-	?> 
     <p class="meta-options field">
         <label for="dateDeb"><?php _e('Date de début', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <input id="dateDeb"
