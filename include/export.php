@@ -6,9 +6,6 @@ add_action( 'manage_posts_extra_tablenav', 'RPJP_add_export_button', 20, 1 );
 /*Ajout de boutons sur la page listant toutes les publicités*/
 function RPJP_add_export_button( $which ) {
 	
-	// Chargement du contrôle js sur les inputs date
-	wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );
-    
 	global $typenow;
   
     if ( 'regie_publicitaire' === $typenow && 'top' === $which ) { //teste si l'on se trouve sur le bon post-type 
