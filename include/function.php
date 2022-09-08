@@ -434,6 +434,9 @@ add_action( 'admin_enqueue_scripts', 'load_swal_2' );
 function load_swal_2(){
   wp_enqueue_script( 'swal2', plugin_dir_url( __FILE__ ) . 'js/sweetalert2.all.min.js', array(), true);
   //wp_enqueue_script( 'swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11', array(), true); Possibilité de charger la librairie depuis un CDN
+  
+  //On charge date.js pour contrôler les <input> type date
+  wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );
 }
 
 /* Problème avec le vidage de la mémoire tampon */
