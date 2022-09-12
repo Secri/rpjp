@@ -63,9 +63,9 @@ add_action( 'admin_menu', 'RPJP_add_metabox' );
 
 function RPJP_add_metabox() {
 	
-	//Box pour ajouter l'image au format pour mobile
+	//Box pour ajouter les images
 	add_meta_box(
-		'RPJP_metabox_imgmobile', // id metabox 
+		'RPJP_metabox_img', // id metabox 
 		'Images', // titre
 		'RPJP_image_mobile_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
