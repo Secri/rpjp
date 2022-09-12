@@ -67,7 +67,7 @@ function RPJP_add_metabox() {
 	add_meta_box(
 		'RPJP_metabox_img', // id metabox 
 		'Images', // titre
-		'RPJP_image_mobile_callback', // fonction de callback 
+		'RPJP_image_callback', // fonction de callback 
 		'regie_publicitaire', // post type 
 		'normal', // position 
 		'default'); // priorité
@@ -104,7 +104,7 @@ function RPJP_add_metabox() {
 }
 
 /*Fonctions qui gèrent l'affichage du contenu des metabox*/
-function RPJP_image_mobile_callback($post){ //images
+function RPJP_image_callback($post){ //images
 	include plugin_dir_path( __FILE__ ) . './images.php';
 }
 
