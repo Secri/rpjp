@@ -74,4 +74,4 @@
 		}
     </script>
     <?php
-		wp_nonce_field( 'RPJP_metabox_imgmobile', 'RPJP_custom_postimage_meta_box_nonce' );
+		wp_nonce_field( 'RPJP_metabox_img', 'RPJP_custom_postimage_meta_box_nonce' );
