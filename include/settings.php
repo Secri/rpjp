@@ -131,7 +131,7 @@ function RPJP_field_size($args){
             id="<?php echo esc_attr( $args['label_for'] ); ?>"
             data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
             name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			placeholder="992"
+			placeholder="Largeur suggérée : 992"
 			value="<?php echo isset( $options['RPJP_size'] ) ?  $options['RPJP_size'] : false; ?>">
     </input>
     <p class="description">
