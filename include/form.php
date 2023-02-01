@@ -104,7 +104,7 @@
 			<?php 
 				_e('Pub sur mobile', 'rpjp-plugin');
 				if ( isset ($options['RPJP_size']) && $options['RPJP_size'] == "" ) {
-					_e('&nbsp;(Pour activer cette option veuillez entrer un sélecteur CSS valide dans les Réglages)', 'rpjp-plugin');
+					_e('&nbsp;(Pour activer cette option veuillez entrer une largeur en px dans les Réglages)', 'rpjp-plugin');
 				}
 			?>
 		</label>
