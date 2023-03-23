@@ -1,6 +1,6 @@
 <?php
 
-/*Enregistre notre zone de paramètres*/
+/* Initialisation des paramètres */
 add_action( 'admin_init', 'RPJP_settings_init' );
  
 /*Options et paramètres personnalisés*/
