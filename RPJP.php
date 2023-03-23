@@ -37,7 +37,7 @@ register_activation_hook(__DIR__, '/RPJP.php', 'RPJP_activate' );
 
 /*Ajoute un lien vers la page de réglages sous le nom du plugin dans la page d'extensions*/
 function RPJP_add_settings_link( $links ) {
-    $settings_link = '<a href="edit.php?post_type=regie_publicitaire&page=ad_settings">' . __( 'Settings' ) . '</a>';
+    $settings_link = '<a href="edit.php?post_type=regie_publicitaire&page=RPJP_settings">' . __( 'Settings' ) . '</a>';
     array_push( $links, $settings_link );
   	return $links;
 }
