@@ -5,171 +5,153 @@ add_action( 'admin_init', 'RPJP_settings_init' );
  
 /*Options et paramètres personnalisés*/
 function RPJP_settings_init() {
-    //enregistre un nouveau paramètre
+    
+	//enregistre un nouveau paramètre
     register_setting( 'RPJP_settings', 'RPJP_options' );
  
     //enregistre une nouvelle section de paramètres
     add_settings_section(
-        'RPJP_section', //ID
+        'RPJP_param_section', //ID
         __( '', 'rpjp-plugin' ), //titre
-		'RPJP_section_callback', //callback
-        'RPJP_settings' //slug
+		'RPJP_param_section_callback', //callback
+        'RPJP_settings', //slug
     );
  
     //ajoute un nouveau champs de paramètre
 	add_settings_field(
         'RPJP_taxo', //ID
         __( 'Taxonomie', 'rpjp-plugin' ), //titre
-        'RPJP_field_taxo', //callback
-        'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
+		'RPJP_create_settings_elmts', //callback
+        'RPJP_settings', //slug du paramètre
+        'RPJP_param_section', //section où le champ se trouve
         array(
             'label_for'         => 'RPJP_taxo',
             'class'             => 'RPJP_row',
             'RPJP_custom_data' 	=> 'custom',
+			'option_name'       => 'RPJP_options',
+			'type_of_elmt'      => 'input',
+			'elmt_type'         => 'text',
+			'default_value'     => 'category',
+			'description'       => array(
+										  'class_name' => 'description',
+                                          'desc_content'    => __('Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'rpjp-plugin')
+								   )
         )
     );
 	
     add_settings_field(
         'RPJP_parent', //ID
         __( 'Terme parent', 'rpjp-plugin' ), //titre
-        'RPJP_field_parent', //callback
+		'RPJP_create_settings_elmts', //callback
         'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
+        'RPJP_param_section', //section où le champ se trouve
         array(
             'label_for'         => 'RPJP_parent',
             'class'             => 'RPJP_row',
             'RPJP_custom_data' 	=> 'custom',
+			'option_name'       => 'RPJP_options',
+			'type_of_elmt'      => 'input',
+			'elmt_type'         => 'text',
+			'default_value'     => '',
+			'description'       => array(
+										  'class_name' => 'description',
+                                          'desc_content'    => __('Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'rpjp-plugin')
+								   )
         )
     );
 	
 	add_settings_field(
         'RPJP_size', //ID
         __( 'Version mobile', 'rpjp-plugin' ), //titre
-        'RPJP_field_size', //callback
+		'RPJP_create_settings_elmts', //callback
         'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
+        'RPJP_param_section', //section où le champ se trouve
         array(
             'label_for'         => 'RPJP_size',
             'class'             => 'RPJP_row',
             'RPJP_custom_data' 	=> 'custom',
+			'option_name'       => 'RPJP_options',
+			'type_of_elmt'      => 'input',
+			'elmt_type'         => 'number',
+			'default_value'     => '',
+			'placeholder'       => 'Recommandée: 992',
+			'description'       => array(
+										  'class_name' => 'description',
+                                          'desc_content'    => __('Entrez une largeur en PX en dessous de laquelle s\'affichera la version mobile.', 'rpjp-plugin')
+								   )
         )
     );
 	
 	add_settings_field(
         'RPJP_prefixe', //ID
         __( 'Préfixe (optionnel)', 'rpjp-plugin' ), //titre
-        'RPJP_field_prefixe', //callback
+		'RPJP_create_settings_elmts', //callback
         'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
+        'RPJP_param_section', //section où le champ se trouve
         array(
             'label_for'         => 'RPJP_prefixe',
             'class'             => 'RPJP_row',
             'RPJP_custom_data' 	=> 'custom',
+			'option_name'       => 'RPJP_options',
+			'type_of_elmt'      => 'input',
+			'elmt_type'         => 'text',
+			'default_value'     => '',
+			'description'       => array(
+										  'class_name' => 'description',
+                                          'desc_content'    => __('Entrez un préfixe pour la génération automatique des références.', 'rpjp-plugin')
+								   )
         )
     );
 		add_settings_field(
         'RPJP_suffixe', //ID
         __( 'Suffixe (optionnel)', 'rpjp-plugin' ), //titre
-        'RPJP_field_suffixe', //callback
+	    'RPJP_create_settings_elmts', //callback
         'RPJP_settings', //slug
-        'RPJP_section', //section où le champ se trouve
+        'RPJP_param_section', //section où le champ se trouve
         array(
-            'label_for'         => 'RPJP_suffixe',
+			'label_for'         => 'RPJP_suffixe',
             'class'             => 'RPJP_row',
             'RPJP_custom_data' 	=> 'custom',
+			'option_name'       => 'RPJP_options',
+			'type_of_elmt'      => 'input',
+			'elmt_type'         => 'text',
+			'default_value'     => '',
+			'description'       => array(
+										  'class_name' => 'description',
+                                          'desc_content'    => __('Entrez un suffixe pour la génération automatique des références.', 'rpjp-plugin')
+								   )
         )
     );
 }
  
-/*Fonction de callback*/
-function RPJP_section_callback( $args ) {
+/* Fonction de callback de la section */
+function RPJP_param_section_callback( $args ) {
     ?>
-    <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Section de réglage de l\'extension réservée au webmaster.', 'rpjp-plugin' ); ?></p>
+		<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php echo __('Section de réglages avancés de l\'extension réservée au webmaster.', 'rpjp-plugin'); ?></p>
     <?php
 }
- 
-/*Fonctions qui affichent l'encard de texte pour y entrer son paramètre*/
-function RPJP_field_taxo( $args ){
-	$options = get_option('RPJP_options', array()); //récupère les options créées
-    //créer un input de texte pour y entrer la taxonomie voulue
-	?>
-    <input  type="text"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			placeholder="category"
-			value="<?php echo isset( $options['RPJP_taxo'] ) && $options['RPJP_taxo'] != '' ?  $options['RPJP_taxo'] : 'category'; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez le nom de la taxonomie dans laquelle le terme parent sera récupéré. (Par défaut "category")', 'rpjp-plugin' ); ?>
-    </p>
-    <?php
-}
-
-function RPJP_field_parent( $args ) {
-    $options = get_option('RPJP_options', array()); //récupère les options créées
-    //crée un input texte pour y entrer le terme parent voulu
-	?>
-    <input  type="text"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			value="<?php echo isset( $options['RPJP_parent'] ) ?  $options['RPJP_parent'] : false; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez le nom du terme mère qui permet de filtrer les pubs sur un même CPT.', 'rpjp-plugin' ); ?>
-    </p>
-    <?php
-}
-
-function RPJP_field_size($args){
-	$options = get_option('RPJP_options', array()); //récupère les options créées
-    //créer un input de nombre pour y entrer la taille pour laquelle le site passe en format mobile
-	?>
-    <input  type="number"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			placeholder="Largeur suggérée : 992"
-			value="<?php echo isset( $options['RPJP_size'] ) ?  $options['RPJP_size'] : false; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez une largeur en PX en dessous de laquelle s\'affichera la version mobile.', 'rpjp-plugin' ); ?>
-    </p>
-    <?php
-}
-
-function RPJP_field_prefixe($args){
-	$options = get_option('RPJP_options', array()); //récupère les options créées
-	//créer un input de texte pour y entrer le préfixe voulu pour la référence auto
-	?>
-    <input  type="text"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			value="<?php echo isset( $options['RPJP_prefixe'] ) ?  $options['RPJP_prefixe'] : false; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez un préfixe pour la génération automatique des références.', 'rpjp-plugin' ); ?>
-    </p>
-    <?php
-}
-
-function RPJP_field_suffixe($args){
-	$options = get_option('RPJP_options', array()); //récupère les options créées
-	//créer un input de texte pour y entrer le suffixe voulu pour la référence auto
-	?>
-    <input  type="text"  
-            id="<?php echo esc_attr( $args['label_for'] ); ?>"
-            data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
-            name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
-			value="<?php echo isset( $options['RPJP_suffixe'] ) ?  $options['RPJP_suffixe'] : false; ?>">
-    </input>
-    <p class="description">
-        <?php esc_html_e( 'Entrez un suffixe pour la génération automatique des références.', 'rpjp-plugin' ); ?>
-    </p>
-    <?php
+/* Fonction callback qui gère la création des champs du formulaire */
+function RPJP_create_settings_elmts( $args ){
+	$options = get_option( $args['option_name'], array() ); //récupère les options du groupe d'options
+	
+	if ( $args['type_of_elmt'] == 'input' ) {
+		?>
+			<input 
+				   type="<?php echo esc_attr( $args['elmt_type'] ); ?>"
+				   <?php echo isset( $args['required'] ) && $args['required'] === 'on' ? 'required="required"' : ''; ?>
+				   <?php echo isset( $args['label_for'] ) && $args['label_for'] != '' ? 'id="' . esc_attr( $args['label_for'] ) . '"' : ''; ?>
+				   data-custom="<?php echo esc_attr( $args['RPJP_custom_data'] ); ?>"
+				   name="RPJP_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
+				   <?php echo isset( $args['placeholder'] ) && $args['placeholder'] != '' ? 'placeholder="' . esc_attr( $args['placeholder'] ) . '"' : ''; ?>
+				   value="<?php echo isset( $options[$args['label_for']] ) && $options[$args['label_for']] != '' ?  $options[$args['label_for']] : esc_attr( $args['default_value'] ); ?>">
+			</input>
+			<?php 
+			if ( isset( $args['description'] ) && $args['description'] != '' ) {
+				?>
+					<p class="<?php echo esc_attr( $args['description']['class_name'] ); ?>"><?php echo $args['description']['desc_content'] ?></p>
+				<?php
+			}
+	}
 }
 
 /*Enregistre la page à l'aide d'un hook*/
