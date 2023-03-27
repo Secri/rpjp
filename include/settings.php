@@ -14,7 +14,7 @@ function RPJP_settings_init() {
         'RPJP_param_section', //ID
         __( '', 'rpjp-plugin' ), //titre
 		'RPJP_param_section_callback', //callback
-        'RPJP_settings', //slug
+        'RPJP_settings' //slug
     );
  
     //ajoute un nouveau champs de paramètre
