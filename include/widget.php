@@ -151,6 +151,9 @@ class rpjp_widget extends WP_Widget {
 		//Attribut d'action JS pour tracker les clics sur les pubs
 		$analyticsEvent = 'onclick="ga(\'send\', \'event\', \''. get_post_type($currentId) .'\', \'clic\', \''. get_the_title($currentId) .'\');"';
 		
+		/*Code pour la remontée de l'événement après bascule vers GA4*/
+		//$analyticsEvent = 'onclick="gtag(\'event\', \''. get_post_type($currentId) .'\', { \'event_type\': \'clic\', \'ad_name\': \''. get_the_title($currentId) .'\' });"';
+		
 		echo '<div class="RPJP_img_cont">';
 
 		if(get_post_meta( $currentId, 'follow', true ) == "on"){
