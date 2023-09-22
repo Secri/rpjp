@@ -7,6 +7,13 @@ function share_taxo_with_pages() {
 
 add_action( 'init', 'share_taxo_with_pages' );
 
+/* Active les taxonomies par défaut sur le post type Page */
+function share_taxo_with_pages() {
+	register_taxonomy_for_object_type( 'category', 'page' );
+}
+
+add_action( 'init', 'share_taxo_with_pages' );
+
 /*On utilise une fonction pour créer notre custom post type*/
 add_action( 'init', 'RPJP_custom_post_type', 0 );
 
