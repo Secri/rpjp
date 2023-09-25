@@ -79,7 +79,7 @@
 	</p>
 	
 	<!-- Calendrier pour saisir les dates de début et de fin -->
-    <p class="meta-options field">
+	<p class="meta-options field">
         <label for="dateDeb"><?php _e('Date de début', 'rpjp-plugin'); ?><strong style="color:red">*</strong></label>
         <input id="dateDeb"
                type="date"
@@ -110,4 +110,11 @@
 		</label>
 		<input <?php if ( isset ($options['RPJP_size']) && $options['RPJP_size'] == "" ) echo 'disabled' ?> type="checkbox" name="mobile" <?php if( isset($custom["mobile"][0]) && $custom["mobile"][0] == 'on' ) { ?>checked="checked"<?php } ?> />
     </p>
+	<!-- Ajout d'une case à cocher pour le renouvellement automatique de la pub -->
+	<p class="meta-options field"> 
+		<label for="renew">
+			Renouvellement auto même durée
+		</label>
+		<input type="checkbox" name="renew" <?php if(isset( $custom["renew"][0] ) && $custom["renew"][0] == 'on' ) { ?> checked="checked" <?php } ?> />
+	</p>
 </div>
