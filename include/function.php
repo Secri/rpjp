@@ -32,7 +32,7 @@ function RPJP_custom_post_type() {
 		'not_found_in_trash'  => __( 'Non trouvée dans la corbeille', 'rpjp-plugin'),
 	);
 	
-	//On peut définir ici d'autres options pour notre custom post type
+	//On définit ici d'autres options pour le custom post type
 	
 	$args = array(
 		'label'               => __( 'Régie publicitaire', 'rpjp-plugin'),
@@ -191,7 +191,12 @@ function RPJP_save_meta_boxes( $post_id ) {
 	} else {
 		update_post_meta( $post_id, 'mobile', 'off');
 	}
-	
+	//Sauvegarde de l'option de renouvellement auto-draft
+	if(isset($_POST['renew'])){
+		update_post_meta($post_id, "renew", $_POST["renew"]);
+	} else {
+		update_post_meta( $post_id, 'renew', 'off');
+	}
 	//Sauvegarde les données des champs de texte et calendrier
     $fields = [
         'lien',
@@ -249,33 +254,28 @@ function RPJP_show_error(){
 	}
 }
 
-add_action('init','RPJP_session'); // Vérifie si la session a débuté et la lance si ce n'est pas le cas
-function RPJP_session(){
-	if ( !session_id() ) {
-		session_start();
-	}
-}
-
 add_action( 'save_post', 'RPJP_dates_disponibles', 1001);
 /*Fonction qui vérifie que la publicité à publier n'est pas prévue en même temps qu'une autre sur les mêmes post-type et catégorie*/
 function RPJP_dates_disponibles($post_id){
+	
 	//l'action ne s'exécute pas si l'on met le poste à la corbeille ou si on le restaure
-   if(
-        isset($_REQUEST['action']) && ( $_REQUEST['action'] == 'trash' )
-    ){
+   if( isset($_REQUEST['action']) && ( $_REQUEST['action'] == 'trash' ) ) {
         return;
     }
+	
 	$debut = get_post_meta($post_id, 'dateDeb', true ); //récupère la date de début
 	$fin = get_post_meta($post_id, 'dateFin', true ); //récupère la date de fin
 	$cpt = get_post_meta( $post_id, 'cpt', true ); //récupère le post-type d'affichage choisi
 	$categ = get_post_meta( $post_id, 'categ', true ); //récupère la catégorie choisie
-	//paramètres pour l'appelle de wp_query: on récupère les posts ayant le même post-type et la même catégorie en paramètre et dont les dates se superposeraient
+	$isRenew = get_post_meta($post_id, 'renew', true ); //Check si l'option renew est activée
+	
+	//paramètres pour l'appel de wp_query
 	$args = array(
     'post_type'  => 'regie_publicitaire',
 	'post_status' => 'publish',
 	'posts_per_page' => -1,
     'meta_query' => array(
-			'relation'	=> 'AND',
+			'relation'	=> 'AND', //On cherche des pubs existantes qui ciblent le même CPT et la même catégorie
 			array(
 				'key'     => 'cpt',
 				'value'   => $cpt,
@@ -317,31 +317,149 @@ function RPJP_dates_disponibles($post_id){
 					'type'    => 'DATE',
 					'compare' => 'BETWEEN'
 				),
+				array( // Une pub existante se termine avant mais est en renouvellement auto
+					array(
+						'key'     => 'dateFin',
+						'value'   => $debut,
+						'type'    => 'DATE',
+						'compare' => '<='
+					),
+					array(
+						'key'     => 'renew',
+						'value'   => 'on',
+						'type'    => 'char',
+						'compare' => 'LIKE',
+					),
+				),
 			),
 		),
 	);
+	
 	$query = new WP_Query( $args );	//on fait la requête
 	if ( $query->post_count > 1 ) { //si la requête retourne plus d'un post 
 				
 		while( $query->have_posts() ) : $query->the_post(); // On parcourt les 2 pubs qui ont été retournées
 			get_the_title($post_id) != get_the_title(get_the_ID()) ? $titre = get_the_title(get_the_ID()) : false ; // On cible celle qui existait au préalable et on stocke son titre
+			get_the_title($post_id) != get_the_title(get_the_ID()) ? $renewSched = get_post_meta( get_the_ID(), 'renew', true ) : false; //On regarde si la pub identifiée est renouvelable
 		endwhile;
 		
 		remove_action('save_post', 'RPJP_dates_disponibles',1001); //on enlève la fonction du hook pour éviter les boucles infinies 
-		//on entre les paramètres qui passeront le post actuel en brouillon
-		$arg = array(
-			'ID' => $post_id,
-			'post_status' => 'draft',
-		);
-		wp_update_post( $arg ); //on passe le poste en brouillon
+			//on entre les paramètres qui passeront le post actuel en brouillon
+			$arg = array(
+				'ID' => $post_id,
+				'post_status' => 'draft',
+			);
+			wp_update_post( $arg ); //on passe le post en brouillon
 		add_action('save_post', 'RPJP_dates_disponibles',1001); //on remet la fonction dans le hook	
-		set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car la période du <strong>". date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) ) ."</strong> au <strong>". date('d-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) ) ."</strong> est en conflit avec la publicité \"<strong>".$titre."</strong>\""." sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentants la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
+		
+		//Génération des contenus des messages d'erreur
+		$errMsgCpt = get_post_meta($post_id, 'cpt', true);
+		$errMsgCat = get_post_meta($post_id, 'categ', true);
+			
+		$errMsgBeg = date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) );
+		$errMsgEnd = date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) );
+		
+		if ($renewSched == 'on') {
+			set_transient( 'rpjp_save_post_error', sprintf( __( 'Impossible de publier cette publicité car "<b>%s</b>" est en renouvellement automatique et va rentrer en conflit sur les contenus de type "<b>%s</b>" présentants la catégorie "<b>%s</b>".', 'rpjp-plugin' ), $titre, $errMsgCpt, $errMsgCat ), 60);
+			//set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car \"<strong>" . $titre . "</strong>\" est en renouvellement automatique et va rentrer en conflit sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentants la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
+		} else {
+			set_transient ( 'rpjp_save_post_error', sprintf( 'Impossible de publier cette publicité car la période du "<b>%s</b>" au "<b>%s</b>" est en conflit avec la publicité "<b>%s</b>" sur les contenus de type "<b>%s</b>" présentants la catégorie "<b>%s</b>".', $errMsgBeg, $errMsgEnd, $titre, $errMsgCpt, $errMsgCat ), 60 );
+			//set_transient( "rpjp_save_post_error", "Impossible de publier cette publicité car la période du <strong>". date( 'd-m-Y', strtotime( get_post_meta($post_id, 'dateDeb', true) ) ) ."</strong> au <strong>". date('d-m-Y', strtotime( get_post_meta($post_id, 'dateFin', true) ) ) ."</strong> est en conflit avec la publicité \"<strong>".$titre."</strong>\""." sur les contenus de type \"<strong>". get_post_meta($post_id, 'cpt', true) ."\"</strong> présentants la catégorie \"<strong>".get_post_meta($post_id, 'categ', true)."\"</strong>.", 60 );
+		}
+		
 		$_SESSION['id'] = $post_id;
+		
+	} else if ( $query->post_count < 2 && $isRenew == 'on') { //si la première requête ne retourne pas plus d'un post et que l'option de renouvellement est activée
+		
+		wp_reset_postdata(); //on reset les données de la première requête
+
+		$origin = date_create($debut);
+		$target = date_create($fin);
+		$interval = date_diff($origin, $target, true);
+
+		if ( intval( $interval->format('%a') ) >= 7) { //Durée minimale pour activer le renouvellement = 1 semaine
+				
+			$args = array( //On définit les paramètres d'une nouvelle requête pour trouver une pub existante programmée dans le futur qui pourrait entre en conflit
+							'post_type'      => 'regie_publicitaire',
+							'post_status'    => 'publish',
+							'posts_per_page' => -1,
+							'meta_query'     => array(
+														'relation'	=> 'AND',       //même CPT et catégorie
+														array(
+															'key'     => 'cpt',
+															'value'   => $cpt,
+															'type'	  => 'char',
+															'compare' => 'LIKE',
+														),
+														array(
+															'key'     => 'categ',
+															'value'   => $categ,
+															'type'	  => 'char',
+															'compare' => 'LIKE',
+														),
+														array(                      
+															'key'     => 'dateDeb', //Dont la date de début est postérieure à la date de fin saisie dans le formulaire
+															'value'   => $fin,
+															'type'    => 'DATE',
+															'compare' => '>=',
+														),
+												)
+					);
+			$query = new WP_Query( $args );	//on fait la requête
+			
+			if ( $query->post_count > 0 ) { //si la requête retourne plus d'un post
+			
+				$tempo = 0; //Initialisation d'une variable temporaire
+				foreach($query->posts as $value){ //On boucle pour identifier l'objet qui a la date de début la proche
+					if ($tempo == 0) {
+						$tempo = strtotime ( $value->dateDeb );
+						$titre = get_the_title($value->ID);
+						$dateDeb = date ('d-m-Y', $tempo);
+					} else if ( $tempo > strtotime ( $value->dateDeb ) ) {
+						$tempo = strtotime ( $value->dateDeb );
+						$titre = get_the_title($value->ID);
+						$dateDeb = date ('d-m-Y', $tempo);
+					}
+				}
+				unset($tempo); //destruction de la variable temporaire
+				
+				remove_action('save_post', 'RPJP_dates_disponibles',1001); //on enlève la fonction du hook pour éviter les boucles infinies 
+				//on entre les paramètres qui passeront le post actuel en brouillon
+					$arg = array(
+						'ID' => $post_id,
+						'post_status' => 'draft',
+					);
+					wp_update_post( $arg ); //on passe le post en brouillon
+							
+				add_action('save_post', 'RPJP_dates_disponibles',1001); //on remet la fonction dans le hook	
+				
+				//Génération du contenu du message d'erreur		
+				set_transient( "rpjp_save_post_error", "Impossible d'utiliser l'option &laquo; <b>Renouvellement automatique</b> &raquo; car la publicité &laquo; <b>" . $titre . "</b> &raquo; qui commencera le <b>" . $dateDeb . "</b> entrera en conflit sur les contenus de type &laquo; <b>". get_post_meta($post_id, 'cpt', true) . "</b> &raquo; présentants la catégorie &laquo; <b>" . get_post_meta($post_id, 'categ', true) . "</b> &raquo;.", 60 );
+				$_SESSION['id'] = $post_id;
+				
+			}else{
+				delete_transient( "rpjp_save_post_error" );
+				unset( $_SESSION['id'] );
+			}
+
+		} else {
+			remove_action('save_post', 'RPJP_dates_disponibles',1001); //on enlève la fonction du hook pour éviter les boucles infinies 
+				//on entre les paramètres qui passeront le post actuel en brouillon
+				$arg = array(
+					'ID' => $post_id,
+					'post_status' => 'draft',
+				);
+				wp_update_post( $arg ); //on passe le post en brouillon
+			add_action('save_post', 'RPJP_dates_disponibles',1001); //on remet la fonction dans le hook
+			//Génération du contenu du message d'erreur	si la durée est inférieure à un mois
+			set_transient ('rpjp_save_post_error', 'Le renouvellement automatique ne peut être activé que sur des publicités d\'une <b>durée d\'une semaine minimum</b>', 60);
+			$_SESSION['id'] = $post_id;
+		}
 	}else{
 		delete_transient( "rpjp_save_post_error" );
 		unset( $_SESSION['id'] );
 	}
-	wp_reset_postdata(); //on reset les données du query
+	wp_reset_postdata(); //on reset les données de la requête
 }
 
 add_action('post_updated_messages','RPJP_show_error_dates_dispo',1002);
@@ -436,10 +554,10 @@ function handleStatus ($currentPost) {
 		}
 	}
 
-/* Chargement des assets JS*/
+/* Chargement des assets JS */
 add_action( 'admin_enqueue_scripts', 'rpjp_load_js' );
 function rpjp_load_js(){
-  //Chargement de la librairie Sweet alerts 2
+  //librairie sweet alerts 2
   wp_enqueue_script( 'swal2', plugin_dir_url( __FILE__ ) . 'js/sweetalert2.all.min.js', array(), true);
   //wp_enqueue_script( 'swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11', array(), true); Possibilité de charger la librairie depuis un CDN
   
