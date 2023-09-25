@@ -8,8 +8,9 @@ add_filter('manage_regie_publicitaire_posts_columns', function ( $columns ){
 			'dateDeb' => __('Date de début', 'rpjp-plugin'),
 			'dateFin' => __('Date de fin', 'rpjp-plugin'),
 			'cpt'     => __('Type de contenu', 'rpjp-plugin'),
-			'categ'   => __('Catégorie', 'rpjp-plugin'),
+			'categ'   => __('S\'affiche sur', 'rpjp-plugin'),
 			'ref'     => __('Référence', 'rpjp-plugin'),
+			'renew'   => __('Renouv. auto', 'rpjp-plugin'),
 			'statut'  => __('Statut', 'rpjp-plugin')
 		)
 	);
@@ -35,6 +36,9 @@ function RPJP_data_colonne($name) {
 		break;
 		case 'ref': //affiche la référence de la publicité
 			echo esc_attr( get_post_meta( get_the_ID(), 'ref', true ));
+		break;
+		case 'renew':
+			echo get_post_meta( get_the_ID(), 'renew', true ) === 'on' ? __('Oui', 'rpjp-plugin') : __('Non', 'rpjp-plugin');
 		break;
 		case 'statut': echo esc_attr ( handleStatus($post) );
 		break;
