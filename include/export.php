@@ -15,9 +15,9 @@ function RPJP_add_export_button( $which ) {
 			<b><?php echo __( 'Générer un fichier d\'export : ', 'rpjp-plugin' ) ?></b>
 			<!--<form method="get"> Crée un conflit avec la soumission des bulk actions -->
 				du
-				<input type="date" id="dateDeb" name="debut"></input>
+				<input type="date" class="xport" id="dateDeb" name="debut"></input>
 				au
-				<input type="date" id="dateFin" name="fin"></input>
+				<input type="date" class="xport" id="dateFin" name="fin"></input>
 				<input type="submit" name="export_post_date" id="exporter" class="button button-primary" value="<?php _e('Exporter', 'rpjp-plugin'); ?>" />
 				<input type="submit" name="export_all_posts" class="button button-primary" value="<?php _e('Exporter toutes les publicités', 'rpjp-plugin'); ?>" />
 			
