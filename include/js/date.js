@@ -16,15 +16,17 @@ document.querySelector('#dateFin').onchange = date_deb_valide; //Création d'un 
 
 		function date_deb_valide(e){ //Controleur de l'écouteur
 			let currentYear = new Date().getFullYear(); //On récupére l'année courante
-			if (new Date(this.value).getFullYear().toString().length > 3 && new Date(this.value).getFullYear() < currentYear) { //On vérifie que l'année n'est pas inférieure à l'année de la date courante
-				//window.alert("Vous ne pouvez pas sélectionner une année antérieure à " + currentYear + '.');
-				Swal.fire({ //Fenêtre d'alerte Sweet Alert 2
-					icon: 'error',
-					title: rpjp_check_dates_vars.error_title, //Récupération du string depuis wp_localize_script()
-					text: rpjp_check_dates_vars.date_ante + currentYear + '.', //Récupération du string depuis wp_localize_script()
-					allowOutsideClick: false
-				});
-				this.value = ""; //On remet la valeur de l'input à 0
+			if (this.getAttribute('class') != 'xport') { //On désactive l'alerte pour l'export des pubs
+				if (new Date(this.value).getFullYear().toString().length > 3 && new Date(this.value).getFullYear() < currentYear) { //On vérifie que l'année n'est pas inférieure à l'année de la date courante
+					//window.alert("Vous ne pouvez pas sélectionner une année antérieure à " + currentYear + '.');
+					Swal.fire({ //Fenêtre d'alerte Sweet Alert 2
+						icon: 'error',
+						title: rpjp_check_dates_vars.error_title, //Récupération du string depuis wp_localize_script()
+						text: rpjp_check_dates_vars.date_ante + currentYear + '.', //Récupération du string depuis wp_localize_script()
+						allowOutsideClick: false
+					});
+					this.value = ""; //On remet la valeur de l'input à 0
+				}
 			}
 			if (document.querySelector('#dateDeb').value !== '' && document.querySelector('#dateFin').value !== '') { // Si les deux input sont renseignés
 				let dateDeb = new Date(document.querySelector('#dateDeb').value); //on construit une nouvelle date de début à partir de la valeur du champ
