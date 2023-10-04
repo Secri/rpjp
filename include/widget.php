@@ -148,11 +148,20 @@ class rpjp_widget extends WP_Widget {
 		
 	private function display_the_add( $currentId ) { // Crée l'ensemble de la pub et l'affiche dans le widget en fonction de l'ID du cpt regie_publicitaire
 			
-		//Attribut d'action JS pour tracker les clics sur les pubs
-		$analyticsEvent = 'onclick="ga(\'send\', \'event\', \''. get_post_type($currentId) .'\', \'clic\', \''. get_the_title($currentId) .'\');"';
+		$options = get_option( 'RPJP_options', array() ); //On récupère les options pour la gestion des events GA4 /Matomo
 		
-		/*Code pour la remontée de l'événement après bascule vers GA4*/
-		//$analyticsEvent = 'onclick="gtag(\'event\', \''. get_post_type($currentId) .'\', { \'event_type\': \'clic\', \'ad_name\': \''. get_the_title($currentId) .'\' });"';
+		$analyticsEvent = ''; //Pas de remontée d'événement dans les stats
+		
+		if ($options['radio_event_push'] == 2) {
+			
+			/*Code pour la remontée de l'événement vers GA4*/
+			$analyticsEvent = 'onclick="gtag(\'event\', \''. get_post_type($currentId) .'\', { \'event_type\': \'clic\', \'ad_name\': \''. get_the_title($currentId) .'\' });"';
+			
+		} elseif ($options['radio_event_push'] == 3) {
+			
+			/*Code pour la remontée de l'événement vers Matomo*/
+			$analyticsEvent = 'onclick="_paq.push([\'trackEvent\',\''. get_post_type($currentId) .'\', \'Clic Régie Pub\', \''. get_the_title($currentId) .'\' ]);"';
+		}
 		
 		echo '<div class="RPJP_img_cont">';
 
