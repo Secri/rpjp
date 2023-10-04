@@ -122,6 +122,23 @@ function RPJP_settings_init() {
 								   )
         )
     );
+	add_settings_field (
+			'RPJP_push', //ID
+			__( 'Remontée des clics', 'rpjp-plugin' ), //titre
+			'RPJP_create_settings_radio', //callback
+			'RPJP_settings', //slug
+			'RPJP_param_section', //section où le champ se trouve
+			array (
+				'label_for'         => 'RPJP_push',
+				'class'             => 'RPJP_row',
+				'RPJP_custom_data'  => 'custom',
+				'option_name'       => 'RPJP_options',
+				'description'       => array (
+										'class_name'   => 'description',
+										'desc_content' => __('Choisissez une plateforme d\'analyse du trafic web', 'rpjp-plugin')
+									   )
+			)
+		);
 }
  
 /* Fonction de callback de la section */
@@ -152,6 +169,30 @@ function RPJP_create_settings_elmts( $args ){
 				<?php
 			}
 	}
+}
+
+/* Fonction callback qui gère la création de boutons radio */
+function RPJP_create_settings_radio( $args ){
+	
+	$options = get_option( $args['option_name'], array() ); //récupère les options du groupe d'options
+	
+	if ( ! isset ($options['radio_event_push']) ) {
+		$options['radio_event_push'] = 1;
+	}
+	
+	$html = '<input type="radio" id="noPush" name="RPJP_options[radio_event_push]" value="1"' . checked( 1, $options['radio_event_push'], false ) . '/>';
+	$html .= '<label for="noPush">Aucune</label><br>';
+	
+	$html .= '<input type="radio" id="ga4" name="RPJP_options[radio_event_push]" value="2"' . checked( 2, $options['radio_event_push'], false ) . '/>';
+	$html .= '<label for="ga4">Analytics 4</label><br>';
+	
+	$html .= '<input type="radio" id="matomo" name="RPJP_options[radio_event_push]" value="3"' . checked( 3, $options['radio_event_push'], false ) . '/>';
+	$html .= '<label for="matomo">Matomo</label><br>';
+	
+	$html .= '<p class="' .  esc_attr ( $args['description']['class_name'] ) . '">' . esc_attr ( $args['description']['desc_content'] ) . '</p>';
+	
+	echo $html;
+	
 }
 
 /*Enregistre la page à l'aide d'un hook*/
