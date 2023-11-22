@@ -1,6 +1,6 @@
 // On crée un écouteur qui va bloquer la saisie au clavier sur les input type date
-document.querySelector('#dateDeb').addEventListener('keypress', noKeyPress); 
-document.querySelector('#dateFin').addEventListener('keypress', noKeyPress);
+document.querySelector('#dateDeb').addEventListener('keydown', noKeyPress); 
+document.querySelector('#dateFin').addEventListener('keydown', noKeyPress);
 
 	function noKeyPress(e) {
 		e.returnValue = false;
