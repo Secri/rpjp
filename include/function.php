@@ -555,21 +555,36 @@ function handleStatus ($currentPost) {
 	}
 
 /* Chargement des assets JS */
+/* Chargement des assets JS */
 add_action( 'admin_enqueue_scripts', 'rpjp_load_js' );
-function rpjp_load_js(){
-  //librairie sweet alerts 2
-  wp_enqueue_script( 'swal2', plugin_dir_url( __FILE__ ) . 'js/sweetalert2.all.min.js', array(), true);
-  //wp_enqueue_script( 'swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11', array(), true); Possibilité de charger la librairie depuis un CDN
+
+function rpjp_load_js( $hook ) {
   
-  //On charge date.js pour contrôler les <input> type date
-  wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );
-  //Chaînes à envoyer à dates.js pour permettre la trad
-  wp_localize_script( 'rpjp-check-dates', 'rpjp_check_dates_vars', array(
-																		'error_title' => __('Erreur', 'rpjp-plugin'),
-																		'date_ante'   => __('Vous ne pouvez pas sélectionner une date dont l\'année est antérieure à ', 'rpjp-plugin'),
-																		'date_post'   => __('La date de début est postérieure à la date de fin.', 'rpjp-plugin'),
-																	)
-					);
+  global $post;
+  
+  if ( $hook == 'post-new.php' || $hook == 'post.php' || $hook == 'edit.php' ) {
+  
+	if ('regie_publicitaire' === $post->post_type ) {
+	
+		//librairie sweet alerts 2
+		wp_enqueue_script( 'swal2', plugin_dir_url( __FILE__ ) . 'js/sweetalert2.all.min.js', array(), true);
+		//wp_enqueue_script( 'swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11', array(), true); Possibilité de charger la librairie depuis un CDN
+  
+		//On charge date.js pour contrôler les <input> type date
+		wp_enqueue_script( 'rpjp-check-dates', plugins_url( '/js/date.js', __FILE__), '', '', true );
+  
+		//Chaînes à envoyer à dates.js pour permettre la trad
+		wp_localize_script( 'rpjp-check-dates', 'rpjp_check_dates_vars', array(
+											'error_title' => __('Erreur', 'rpjp-plugin'),
+											'date_ante'   => __('Vous ne pouvez pas sélectionner une date dont l\'année est antérieure à ', 'rpjp-plugin'),
+											'date_post'   => __('La date de début est postérieure à la date de fin.', 'rpjp-plugin'),
+											)
+				  );
+	
+	}
+  
+  }
+  
 }
 
 /* Problème avec le vidage de la mémoire tampon */
